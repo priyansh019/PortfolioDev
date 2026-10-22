@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Priyansh Singh | Developer Portfolio</title>
+    <meta name="description" content="B.Tech ECE undergraduate at AKGEC exploring full-stack web development, AI-powered applications, and cybersecurity. Features verified projects and liquid intelligence design." />
+    <meta property="og:title" content="Priyansh Singh | Developer Portfolio" />
+    <meta property="og:description" content="B.Tech ECE undergraduate at AKGEC exploring full-stack web development, AI-powered applications, and cybersecurity. Features verified projects and liquid intelligence design." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="theme-color" content="#0a0d14" media="(prefers-color-scheme: dark)" />
+    <meta name="theme-color" content="#fbfbfa" media="(prefers-color-scheme: light)" />
+
+    <!-- Inline SVG Favicon with distinctive PS monogram -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%230f172a'/><path d='M9 10h6a4 4 0 0 1 0 8H9v6m10-7a3 3 0 0 1 4 3c0 2-2 3-4 3h-2' stroke='%2338bdf8' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round' fill='none'/></svg>" />
+
+    <!-- Fonts: Plus Jakarta Sans & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap" rel="stylesheet" />
+
+    <!-- Theme Initialization Script to eliminate theme flash -->
+    <script>
+      (function() {
+        try {
+          var saved = localStorage.getItem('ps-portfolio-theme');
+          var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (saved === 'dark' || (!saved && prefersDark)) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.setAttribute('data-theme', 'dark');
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.setAttribute('data-theme', 'light');
+          }
+        } catch (e) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+  </head>
+  <body class="bg-[#fbfbfa] text-slate-800 dark:bg-[#080b11] dark:text-slate-100 font-sans antialiased selection:bg-cyan-500/20 selection:text-cyan-700 dark:selection:bg-cyan-400/20 dark:selection:text-cyan-300">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
