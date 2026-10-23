@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { PROFILE, SOCIAL_LINKS } from '../../data/portfolio.ts';
 import { Mail, Copy, Check, ExternalLink, ArrowUpRight } from 'lucide-react';
+import {
+  LinkedInLogo,
+  GitHubLogo,
+  CredlyLogo,
+  LeetCodeLogo,
+} from '../ui/BrandLogos.tsx';
 
 export const ContactSection: React.FC = () => {
   const [copied, setCopied] = useState(false);
@@ -35,7 +41,7 @@ export const ContactSection: React.FC = () => {
   return (
     <section id="contact" className="py-20 md:py-28 relative">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-slate-900 text-white rounded-2xl p-8 sm:p-12 border border-slate-800 shadow-xl relative overflow-hidden">
+        <div className="bg-slate-900 text-white rounded-2xl p-8 sm:p-12 border border-slate-800 shadow-xl relative overflow-hidden transition-all duration-200">
           {/* Subtle background glow */}
           <div
             className="absolute -right-20 -bottom-20 w-80 h-80 rounded-full bg-cyan-500/10 blur-3xl pointer-events-none"
@@ -53,11 +59,11 @@ export const ContactSection: React.FC = () => {
               I am open to internships, collaborative projects in web development, cybersecurity tools, or AI workflow integrations. Feel free to reach out directly.
             </p>
 
-            {/* Direct Email Actions */}
+            {/* Direct Email Actions with smooth hover lift */}
             <div className="flex flex-wrap items-center gap-3 mb-8">
               <a
                 href={`mailto:${PROFILE.email}`}
-                className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-lg shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300"
+                className="inline-flex items-center gap-2 px-6 py-3 text-sm font-semibold text-slate-950 bg-cyan-400 hover:bg-cyan-300 rounded-lg shadow-sm transition-all duration-150 hover:-translate-y-1 active:translate-y-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-300"
               >
                 <Mail className="w-4 h-4" />
                 <span>Send Email</span>
@@ -68,7 +74,7 @@ export const ContactSection: React.FC = () => {
                 type="button"
                 onClick={handleCopyEmail}
                 aria-label={`Copy email address ${PROFILE.email}`}
-                className="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium text-slate-200 bg-slate-800/90 hover:bg-slate-800 border border-slate-700 rounded-lg transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
+                className="inline-flex items-center gap-2 px-5 py-3 text-sm font-medium text-slate-200 bg-slate-800/90 hover:bg-slate-800 border border-slate-700 rounded-lg transition-all duration-150 hover:-translate-y-1 active:translate-y-0 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-400"
               >
                 {copied ? (
                   <>
@@ -104,10 +110,22 @@ export const ContactSection: React.FC = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={link.ariaLabel}
-                    className="inline-flex items-center gap-1 text-xs font-mono text-slate-400 hover:text-cyan-400 transition-colors"
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-mono text-slate-300 bg-slate-800/70 hover:bg-slate-700/80 rounded-md border border-slate-700/70 transition-all duration-150 hover:-translate-y-0.5"
                   >
+                    {link.platform === 'LinkedIn' && (
+                      <LinkedInLogo className="w-3.5 h-3.5 text-[#0A66C2]" />
+                    )}
+                    {link.platform === 'GitHub' && (
+                      <GitHubLogo className="w-3.5 h-3.5 text-white" />
+                    )}
+                    {link.platform === 'Credly' && (
+                      <CredlyLogo className="w-3.5 h-3.5 text-[#FF6B00]" />
+                    )}
+                    {link.platform === 'LeetCode' && (
+                      <LeetCodeLogo className="w-3.5 h-3.5 text-[#FFA116]" />
+                    )}
                     <span>{link.platform}</span>
-                    <ExternalLink className="w-3 h-3 opacity-60" />
+                    <ExternalLink className="w-3 h-3 opacity-60 ml-0.5" />
                   </a>
                 ))}
               </div>

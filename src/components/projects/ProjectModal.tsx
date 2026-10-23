@@ -1,7 +1,8 @@
 import React, { useEffect } from 'react';
-import { X, ExternalLink, Github, FileText, CheckCircle2, Clock, Laptop, Code2, AlertTriangle } from 'lucide-react';
+import { X, ExternalLink, FileText, CheckCircle2, Clock, Laptop, Code2, AlertTriangle } from 'lucide-react';
 import { ProjectItem, ProjectStatus } from '../../types/portfolio.ts';
 import { useFocusTrap } from '../../hooks/useFocusTrap.ts';
+import { GitHubLogo } from '../ui/BrandLogos.tsx';
 
 interface ProjectModalProps {
   project: ProjectItem | null;
@@ -68,7 +69,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-project-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-900/70 backdrop-blur-sm overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-slate-950/75 backdrop-blur-sm overflow-y-auto"
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
       }}
@@ -80,7 +81,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
         {/* Header */}
         <div className="flex items-start justify-between gap-4 pb-4 border-b border-slate-200 dark:border-slate-800">
           <div>
-            <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mb-1">
+            <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400 mb-1.5">
               <span className="font-mono text-cyan-600 dark:text-cyan-400 font-medium">
                 {project.category}
               </span>
@@ -93,7 +94,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
             >
               {project.title}
             </h2>
-            <p className="text-sm text-slate-500 dark:text-slate-400">{project.subtitle}</p>
+            <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">{project.subtitle}</p>
           </div>
 
           <button
@@ -106,26 +107,26 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
         </div>
 
         {/* Content Body */}
-        <div className="py-6 space-y-6 max-h-[60vh] overflow-y-auto pr-1">
-          {/* Overview */}
+        <div className="py-6 space-y-6 max-h-[62vh] overflow-y-auto pr-2">
+          {/* Detailed Overview */}
           <div>
             <h3 className="text-xs font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
-              Overview
+              Architecture & Overview
             </h3>
-            <p className="text-sm sm:text-base text-slate-700 dark:text-slate-300 leading-relaxed">
+            <div className="text-sm text-slate-700 dark:text-slate-300 leading-relaxed space-y-2 whitespace-pre-line bg-slate-50/60 dark:bg-slate-900/40 p-4 rounded-xl border border-slate-200/80 dark:border-slate-800/80 font-sans">
               {project.fullOverview || project.description}
-            </p>
+            </div>
           </div>
 
-          {/* Notes / Special Disclaimers (e.g. Render spin up, NovaBank demo disclaimer) */}
+          {/* Notes / Special Disclaimers */}
           {project.notes && (
-            <div className="p-3.5 rounded-lg bg-slate-50 dark:bg-slate-900/90 border border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-400 flex items-start gap-2.5">
+            <div className="p-3.5 rounded-lg bg-amber-50/60 dark:bg-amber-950/30 border border-amber-200 dark:border-amber-900/50 text-xs text-amber-800 dark:text-amber-300 flex items-start gap-2.5">
               <AlertTriangle className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
               <span>{project.notes}</span>
             </div>
           )}
 
-          {/* Documented Endpoints (e.g. NovaVoice Calendar Bridge) */}
+          {/* Documented Endpoints */}
           {project.endpoints && project.endpoints.length > 0 && (
             <div>
               <h3 className="text-xs font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
@@ -146,7 +147,7 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
           {project.technologies.length > 0 && (
             <div>
               <h3 className="text-xs font-mono uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-2">
-                Technologies
+                Technical Stack
               </h3>
               <div className="flex flex-wrap gap-2">
                 {project.technologies.map((tech) => (
@@ -172,9 +173,9 @@ export const ProjectModal: React.FC<ProjectModalProps> = ({ project, onClose }) 
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={link.ariaLabel}
-                className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+                className="inline-flex items-center gap-1.5 px-3.5 py-2 text-xs font-medium text-slate-700 dark:text-slate-200 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-lg transition-all duration-150 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
               >
-                {link.type === 'repo' && <Github className="w-3.5 h-3.5" />}
+                {link.type === 'repo' && <GitHubLogo className="w-3.5 h-3.5" />}
                 {link.type === 'live' && <ExternalLink className="w-3.5 h-3.5" />}
                 {link.type === 'docs' && <FileText className="w-3.5 h-3.5" />}
                 <span>{link.label}</span>

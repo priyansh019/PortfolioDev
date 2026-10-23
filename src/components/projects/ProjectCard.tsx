@@ -1,7 +1,8 @@
 import React, { useRef } from 'react';
-import { ExternalLink, Github, FileText, CheckCircle2, Clock, Laptop, Code2, AlertCircle } from 'lucide-react';
+import { ExternalLink, FileText, CheckCircle2, Clock, Laptop, Code2, AlertCircle, ArrowRight } from 'lucide-react';
 import { ProjectItem, ProjectStatus } from '../../types/portfolio.ts';
 import { ProjectMockup } from './ProjectMockup.tsx';
+import { GitHubLogo } from '../ui/BrandLogos.tsx';
 
 interface ProjectCardProps {
   project: ProjectItem;
@@ -67,7 +68,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenDetails
     <article
       ref={cardRef}
       onMouseMove={handleMouseMove}
-      className="card-spotlight group flex flex-col justify-between bg-white dark:bg-[#0d121d] border border-slate-200 dark:border-slate-800/80 rounded-xl p-5 hover:border-slate-300 dark:hover:border-slate-700 transition-all duration-200 shadow-xs hover:shadow-md"
+      className="card-spotlight group flex flex-col justify-between bg-white dark:bg-[#0d121d] border border-slate-200 dark:border-slate-800/80 rounded-xl p-5 hover:border-cyan-500/50 dark:hover:border-cyan-500/50 hover:-translate-y-2 hover:shadow-xl transition-all duration-200 shadow-xs"
     >
       <div>
         {/* Designed Interface Mockup */}
@@ -87,7 +88,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenDetails
         <h3 className="text-xl font-bold text-slate-900 dark:text-white tracking-tight mb-1 group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
           {project.title}
         </h3>
-        <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-2">
+        <p className="text-xs font-medium text-slate-500 dark:text-slate-400 mb-2.5">
           {project.subtitle}
         </p>
 
@@ -121,13 +122,14 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenDetails
         )}
       </div>
 
-      {/* Action Footer */}
+      {/* Action Footer with Hover micro-interactions */}
       <div className="pt-4 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between gap-3 mt-auto">
         <button
           onClick={() => onOpenDetails(project)}
-          className="text-xs font-semibold text-slate-900 dark:text-white hover:text-cyan-600 dark:hover:text-cyan-400 underline underline-offset-4 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 rounded py-1"
+          className="inline-flex items-center gap-1 text-xs font-semibold text-slate-900 dark:text-white hover:text-cyan-600 dark:hover:text-cyan-400 transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 rounded py-1 group/btn"
         >
-          View details
+          <span>View architecture & details</span>
+          <ArrowRight className="w-3.5 h-3.5 transition-transform group-hover/btn:translate-x-1" />
         </button>
 
         <div className="flex items-center gap-2">
@@ -137,10 +139,10 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenDetails
               target="_blank"
               rel="noopener noreferrer"
               aria-label={sourceLink.ariaLabel}
-              className="p-1.5 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+              className="p-1.5 text-slate-600 hover:text-slate-950 dark:text-slate-400 dark:hover:text-white rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-150 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
               title="View Source on GitHub"
             >
-              <Github className="w-4 h-4" />
+              <GitHubLogo className="w-4 h-4" />
             </a>
           )}
           {docsLink && (
@@ -149,8 +151,8 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenDetails
               target="_blank"
               rel="noopener noreferrer"
               aria-label={docsLink.ariaLabel}
-              className="p-1.5 text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
-              title="API Documentation"
+              className="p-1.5 text-slate-600 hover:text-slate-950 dark:text-slate-400 dark:hover:text-white rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-150 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+              title="FastAPI Interactive Documentation"
             >
               <FileText className="w-4 h-4" />
             </a>
@@ -161,7 +163,7 @@ export const ProjectCard: React.FC<ProjectCardProps> = ({ project, onOpenDetails
               target="_blank"
               rel="noopener noreferrer"
               aria-label={liveLink.ariaLabel}
-              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-cyan-700 dark:text-cyan-300 bg-cyan-50 dark:bg-cyan-950/50 hover:bg-cyan-100 dark:hover:bg-cyan-900/50 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+              className="inline-flex items-center gap-1 px-2.5 py-1 text-xs font-medium text-cyan-700 dark:text-cyan-300 bg-cyan-50 dark:bg-cyan-950/50 hover:bg-cyan-100 dark:hover:bg-cyan-900/50 rounded-md transition-all duration-150 hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 shadow-2xs"
             >
               <span>Demo</span>
               <ExternalLink className="w-3 h-3" />

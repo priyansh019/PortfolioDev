@@ -28,6 +28,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   const navLinks = [
     { label: 'Projects', href: '#projects', id: 'projects' },
+    { label: '3D Constellation', href: '#constellation', id: 'constellation' },
     { label: 'About', href: '#about', id: 'about' },
     { label: 'Skills', href: '#skills', id: 'skills' },
     { label: 'Experience', href: '#experience', id: 'experience' },
@@ -46,27 +47,27 @@ export const Navbar: React.FC<NavbarProps> = ({
       </a>
 
       <header
-        className={`sticky top-0 z-40 w-full transition-all duration-200 ${
+        className={`sticky top-0 z-40 w-full transition-all duration-300 ${
           isScrolled
-            ? 'bg-[#fbfbfa]/85 dark:bg-[#080b11]/85 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800/80 shadow-xs'
+            ? 'bg-white/90 dark:bg-[#080b11]/90 backdrop-blur-md border-b border-slate-200/90 dark:border-slate-800/90 shadow-xs'
             : 'bg-transparent border-b border-transparent'
         }`}
       >
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-8">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-6">
           {/* Zone 1: Single text element wordmark */}
           <a
             href="#hero"
             aria-label="Priyansh Singh - Back to top"
-            className="group flex items-center gap-2 whitespace-nowrap shrink-0 text-slate-900 dark:text-white font-bold tracking-tight text-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 rounded"
+            className="group flex items-center gap-2.5 whitespace-nowrap shrink-0 text-slate-900 dark:text-white font-bold tracking-tight text-lg hover:-translate-y-0.5 transition-transform duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500 rounded"
           >
-            <span className="w-2 h-2 rounded-full bg-cyan-500 transition-transform group-hover:scale-125" />
-            <span>Priyansh Singh</span>
+            <span className="w-2.5 h-2.5 rounded-full bg-cyan-500 transition-transform group-hover:scale-125 shadow-[0_0_8px_rgba(6,182,212,0.8)]" />
+            <span className="font-extrabold">Priyansh Singh</span>
           </a>
 
-          {/* Zone 2: 4–6 concise single-line text navigation links */}
+          {/* Zone 2: Concise single-line navigation links */}
           <nav
             aria-label="Primary Navigation"
-            className="hidden md:flex items-center gap-7 text-sm font-medium text-slate-600 dark:text-slate-300"
+            className="hidden lg:flex items-center gap-6 text-sm font-medium text-slate-600 dark:text-slate-300"
           >
             {navLinks.map((link) => {
               const isActive = activeSection === link.id;
@@ -74,7 +75,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 <a
                   key={link.href}
                   href={link.href}
-                  className={`transition-colors whitespace-nowrap shrink-0 relative py-1 hover:text-slate-900 dark:hover:text-white ${
+                  className={`transition-all duration-150 whitespace-nowrap shrink-0 relative py-1 hover:-translate-y-0.5 hover:text-slate-900 dark:hover:text-white ${
                     isActive
                       ? 'text-cyan-600 dark:text-cyan-400 font-semibold'
                       : ''
@@ -92,29 +93,36 @@ export const Navbar: React.FC<NavbarProps> = ({
             })}
           </nav>
 
-          {/* Zone 3: Actions - Theme Toggle & Mobile Menu */}
+          {/* Zone 3: Actions - Theme Toggle & Contact */}
           <div className="flex items-center gap-3 shrink-0">
-            {/* Real Theme Toggle Button */}
+            {/* Prominent Real Theme Toggle Button */}
             <button
               onClick={onToggleTheme}
               type="button"
               aria-label={
-                theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme'
+                theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'
               }
               aria-pressed={theme === 'dark'}
-              className="p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700/80 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+              className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-100 hover:bg-slate-200 dark:bg-slate-800/90 dark:hover:bg-slate-700/90 text-slate-700 dark:text-slate-200 border border-slate-300/80 dark:border-slate-700 transition-all duration-150 hover:-translate-y-0.5 shadow-2xs cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
             >
               {theme === 'dark' ? (
-                <Sun className="w-4 h-4 text-amber-400 transition-transform hover:rotate-45" />
+                <>
+                  <Sun className="w-3.5 h-3.5 text-amber-400 animate-pulse" />
+                  <span className="hidden sm:inline">Light Mode</span>
+                </>
               ) : (
-                <Moon className="w-4 h-4 text-slate-700 transition-transform hover:-rotate-12" />
+                <>
+                  <Moon className="w-3.5 h-3.5 text-slate-700" />
+                  <span className="hidden sm:inline">Dark Mode</span>
+                </>
               )}
             </button>
 
-            {/* Quick Explore / Connect CTA (Desktop) */}
+            {/* Quick Explore / Connect CTA */}
             <a
               href="#contact"
-              className="hidden sm:inline-flex items-center justify-center px-3.5 py-1.5 text-xs font-semibold text-slate-900 dark:text-white bg-slate-100 dark:bg-slate-800/90 hover:bg-slate-200 dark:hover:bg-slate-700 border border-slate-300/80 dark:border-slate-700 rounded-lg transition-colors whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+              className="hidden sm:inline-flex items-center justify-center px-3.5 py-1.5 text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 dark:bg-cyan-500 dark:text-slate-950 dark:hover:bg-cyan-400 rounded-lg transition-all duration-150 hover:-translate-y-0.5 shadow-2xs whitespace-nowrap shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
             >
               Let's Connect
             </a>
@@ -125,7 +133,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               type="button"
               aria-label="Open navigation menu"
               aria-expanded={mobileMenuOpen}
-              className="md:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+              className="lg:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
             >
               <Menu className="w-5 h-5" />
             </button>

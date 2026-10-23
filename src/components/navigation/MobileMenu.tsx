@@ -31,6 +31,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({
 
   const navLinks = [
     { label: 'Projects', href: '#projects' },
+    { label: '3D Constellation', href: '#constellation' },
     { label: 'About', href: '#about' },
     { label: 'Skills', href: '#skills' },
     { label: 'Experience', href: '#experience' },

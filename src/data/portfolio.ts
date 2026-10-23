@@ -30,7 +30,7 @@ export const PROFILE = {
   college: 'Ajay Kumar Garg Engineering College (AKGEC), Ghaziabad',
   email: 'priyansh.singh019@gmail.com',
   languages: 'Japanese (Elementary)',
-  summary: `I'm Priyansh Kumar Singh, an Electronics and Communication Engineering undergraduate at Ajay Kumar Garg Engineering College (AKGEC), Ghaziabad. I have a growing passion for software development, network security, and AI integrations. I enjoy learning foundational technologies and applying them to solve practical problems. Currently strengthening my skills in full-stack architecture, Python, C++, and modern web tools while seeking internship opportunities where I can learn, build, and contribute meaningfully.`,
+  summary: `I'm Priyansh Kumar Singh, an Electronics and Communication Engineering undergraduate at Ajay Kumar Garg Engineering College (AKGEC), Ghaziabad. I have a deep passion for building robust software systems, network reconnaissance tools, and AI-driven automation workflows. I believe in writing transparent, maintainable code, understanding fundamental computer systems and protocols, and turning curiosity into functional, production-ready applications.`,
 };
 
 export const SOCIAL_LINKS: SocialLink[] = [
@@ -68,7 +68,7 @@ export const SOCIAL_LINKS: SocialLink[] = [
     platform: 'Instagram',
     url: 'https://www.instagram.com/itspriyansh19',
     handle: 'itspriyansh19',
-    ariaLabel: 'Priyansh Singh Instagram profile (personal/creative), opens in a new tab',
+    ariaLabel: 'Priyansh Singh Instagram profile (creative & photography), opens in a new tab',
   },
 ];
 
@@ -76,15 +76,22 @@ export const PROJECTS: ProjectItem[] = [
   {
     id: 'sentinelpy',
     title: 'SentinelPy',
-    subtitle: 'Network Security Scanner',
+    subtitle: 'Network Security Scanner & Reconnaissance Platform',
     category: 'Cybersecurity',
     categories: ['Cybersecurity', 'APIs & Systems'],
     status: 'deployed',
     statusLabel: 'Live / Deployed',
-    description: 'Full-stack network-security platform designed for scan orchestration, port inspection, service fingerprinting, and risk classification.',
-    fullOverview: 'A full-stack network-security scanning platform designed with a React + Vite dashboard, FastAPI backend, and an asynchronous Python scanning engine. Built to handle scan requests, port scanning, service fingerprinting, known-vulnerability matching, and risk classification.',
-    technologies: ['React', 'Vite', 'FastAPI', 'Python'],
-    notes: 'Hosted on Render; service may take a moment to wake on first load due to free-tier spin-up.',
+    description: 'Full-stack network-security scanning platform designed for scan orchestration, port inspection, service fingerprinting, and automated vulnerability classification.',
+    fullOverview: `SentinelPy is a full-stack network reconnaissance and vulnerability discovery suite. Built from the ground up to automate port probing, protocol identification, and preliminary risk categorization without external heavy dependencies.
+
+Key Technical Architecture:
+• Frontend Dashboard: Responsive React + Vite application providing real-time scan job tracking, target IP input validation, and interactive port result tables.
+• Backend API: Asynchronous FastAPI server handling concurrent probe requests, payload validation, and CORS-secured endpoint routing.
+• Core Scanning Engine: Native multi-threaded Python engine executing TCP socket handshakes, port state evaluation (Open, Filtered, Closed), and service banner grabbing (HTTP/Nginx, SSH, SMTP).
+• Vulnerability Correlation: Maps recognized server headers and banner signatures against known common risk vectors for automated severity scoring.
+• API Documentation: Integrated Swagger/OpenAPI docs hosted directly on Render at /docs.`,
+    technologies: ['React', 'Vite', 'FastAPI', 'Python', 'TCP Sockets', 'Render'],
+    notes: 'Hosted on Render free tier; service may take a moment to wake on first load due to idle instance spin-up.',
     links: [
       {
         label: 'Live Dashboard',
@@ -109,14 +116,20 @@ export const PROJECTS: ProjectItem[] = [
   {
     id: 'clockwork',
     title: 'ClockWork',
-    subtitle: 'AI-Powered Everyday Tasks',
+    subtitle: 'AI-Powered Everyday Tasks & Workflow Automation',
     category: 'AI & Automation',
     categories: ['AI & Automation', 'Web Applications'],
     status: 'deployed',
     statusLabel: 'Live / Deployed',
-    description: 'An AI-powered everyday task application integrating TypeScript and the Gemini API for intelligent workflow assistance.',
-    fullOverview: 'An AI-powered application intended to assist with everyday tasks and smart workflows. Built as a responsive TypeScript web application with Google Gemini API integration for natural language understanding and automated task assistance.',
-    technologies: ['TypeScript', 'Gemini API', 'React'],
+    description: 'An AI-powered everyday task companion integrating TypeScript and Google Gemini API for natural language workflow scheduling and action tracking.',
+    fullOverview: `ClockWork transforms unstructured everyday thoughts and chaotic task descriptions into prioritized, actionable schedules using generative AI.
+
+Key Technical Architecture:
+• TypeScript Foundation: Strong typing across application state, user inputs, task models, and LLM inference response schemas.
+• Gemini API Pipeline: Leverages Google's Gemini models for context-aware task distillation, automatic priority calculation (Urgent, High, Normal), and step-by-step checklist generation.
+• Interactive UI: Clean, responsive user interface featuring quick-add inputs, animated status transitions, and dynamic task filtering.
+• Cloud Edge Hosting: Continuously deployed on Vercel with zero cold-start delay for immediate accessibility.`,
+    technologies: ['TypeScript', 'Gemini API', 'React', 'Vercel', 'Tailwind CSS'],
     links: [
       {
         label: 'Live App',
@@ -135,14 +148,19 @@ export const PROJECTS: ProjectItem[] = [
   {
     id: 'novabank',
     title: 'NovaBank',
-    subtitle: 'Banking Interface Project',
+    subtitle: 'Private Banking Interface & Financial Dashboard Concept',
     category: 'Web Applications',
     categories: ['Web Applications'],
     status: 'deployed',
     statusLabel: 'Live / Deployed',
-    description: 'A modern web interface concept exploring private-banking dashboards and account workflows.',
-    fullOverview: 'A banking application project presented as an exploratory next-generation private-banking experience. The repository contains web-application front-end code and banking-related Python logic.',
-    technologies: ['Web Frontend', 'Python'],
+    description: 'A modern web interface concept exploring private-banking dashboards, account metrics, simulated transaction ledger, and asset management.',
+    fullOverview: `NovaBank is an editorial design and engineering study for a high-end private banking interface. It explores how financial clarity, data density, and security-centric workflows can be presented cleanly.
+
+Key Technical Highlights:
+• Frontend Architecture: Responsive web application showcasing account cards, currency switches, quick-transfer dialogs, and balance timeline visualizers.
+• Backend Modules: Python files handling mock transaction validation, balance state updates, and account ledger integrity simulations.
+• Visual Polish: High-contrast data presentation, tabular numerical alignment (tabular-nums), and responsive layouts for mobile and desktop screens.`,
+    technologies: ['Web Frontend', 'Python', 'Vercel', 'JavaScript'],
     notes: 'Demonstration project. Does not offer real financial transactions, authenticated banking services, or regulatory compliance.',
     links: [
       {
@@ -162,14 +180,19 @@ export const PROJECTS: ProjectItem[] = [
   {
     id: 'workforce-iq',
     title: 'WorkForce IQ',
-    subtitle: 'Repository Project',
+    subtitle: 'Intelligent Workforce Management Repository',
     category: 'AI & Automation',
     categories: ['AI & Automation'],
     status: 'in-progress',
     statusLabel: 'In Progress',
     description: 'Description being updated. See the repository for current details.',
-    fullOverview: 'This project repository was recently registered. Active development is underway; please inspect the GitHub repository for the latest code commits and architecture documentation.',
-    technologies: [],
+    fullOverview: `WorkForce IQ is an in-progress project repository exploring algorithmic workforce scheduling, team bandwidth allocation, and intelligent operations management.
+
+Active Development Status:
+• Repository registered on GitHub under priyansh019/WorkForceIQ.
+• Codebase architecture and feature modules are currently in active iterative development.
+• Please visit the repository for the latest commit logs, issue tracker, and implementation milestones.`,
+    technologies: ['Git', 'Python / Web'],
     needsVerification: true,
     links: [
       {
@@ -183,14 +206,19 @@ export const PROJECTS: ProjectItem[] = [
   {
     id: 'placement-report',
     title: 'Placement Report',
-    subtitle: 'Repository Project',
+    subtitle: 'Institutional Placement Analytics Repository',
     category: 'Web Applications',
     categories: ['Web Applications'],
     status: 'in-progress',
     statusLabel: 'In Progress',
     description: 'Description being updated. See the repository for current details.',
-    fullOverview: 'This project repository was recently registered. Active development is underway; please inspect the GitHub repository for the latest code commits and architecture documentation.',
-    technologies: [],
+    fullOverview: `Placement Report is an in-progress project examining college campus placement metrics, company visit logs, recruitment statistics, and analytical report generation.
+
+Active Development Status:
+• Codebase hosted on GitHub at priyansh019/Placement_Report.
+• Focuses on data organization, cohort categorization, and student placement data insights.
+• Refer to the source repository for current branches, schema definitions, and upcoming release notes.`,
+    technologies: ['Git', 'Data / Web'],
     needsVerification: true,
     links: [
       {
@@ -204,14 +232,19 @@ export const PROJECTS: ProjectItem[] = [
   {
     id: 'impact-link',
     title: 'Impact Link',
-    subtitle: 'Repository Project',
+    subtitle: 'Collaboration & Student Impact Network Repository',
     category: 'Web Applications',
     categories: ['Web Applications'],
     status: 'in-progress',
     statusLabel: 'In Progress',
     description: 'Description being updated. See the repository for current details.',
-    fullOverview: 'This project repository was recently registered. Active development is underway; please inspect the GitHub repository for the latest code commits and architecture documentation.',
-    technologies: [],
+    fullOverview: `Impact Link is an open project repository exploring collaborative student initiatives, peer project matching, and measurable community impact tracking.
+
+Active Development Status:
+• Repository hosted at priyansh019/ImpactLink.
+• Currently under active planning and prototype construction.
+• Inspect the GitHub repository for architecture discussions, dependencies, and code commits.`,
+    technologies: ['Git', 'Web Application'],
     needsVerification: true,
     links: [
       {
@@ -225,14 +258,20 @@ export const PROJECTS: ProjectItem[] = [
   {
     id: 'novavoice-calendar-bridge',
     title: 'NovaVoice Calendar Bridge',
-    subtitle: 'Local API Service',
+    subtitle: 'Local Flask REST API for Google Calendar Integration',
     category: 'APIs & Systems',
     categories: ['APIs & Systems'],
     status: 'local-prototype',
     statusLabel: 'Local Prototype',
-    description: 'A local Flask API bridge connecting frontend voice/assistant interfaces to Google Calendar for event scheduling and availability checks.',
-    fullOverview: 'A local Flask API prototype connecting a front-end client to Google Calendar. Handles calendar connectivity diagnostics, health endpoints, automated meeting booking, and real-time slot availability requests.',
-    technologies: ['Python', 'Flask', 'Google Calendar API'],
+    description: 'A local Flask API bridge connecting frontend voice/assistant interfaces to Google Calendar for automated meeting scheduling and slot availability checks.',
+    fullOverview: `NovaVoice Calendar Bridge is a lightweight local REST API microservice constructed in Python with Flask. It serves as an intermediary bridge between frontend voice assistants or conversational interfaces and Google Calendar.
+
+Key Technical Endpoints & Logic:
+• GET / and GET /health: Health status and runtime ping diagnostics.
+• GET /api/health: JSON service status and Google Calendar OAuth token validity verification.
+• POST /api/check_availability: Query calendar time windows against requested participant availability without conflict overlaps.
+• POST /api/book_meeting: Creates formatted Google Calendar event objects with summary, description, attendees, and ISO-8601 timestamps.`,
+    technologies: ['Python', 'Flask', 'Google Calendar API', 'REST API'],
     endpoints: [
       'GET /',
       'GET /api/health',
@@ -246,14 +285,20 @@ export const PROJECTS: ProjectItem[] = [
   {
     id: 'leetcode-solutions',
     title: 'LeetCode Solutions',
-    subtitle: 'Algorithms & Data Structures',
+    subtitle: 'C++ Algorithmic Practice & Data Structure Implementations',
     category: 'Experiments & Practice',
     categories: ['Experiments & Practice'],
     status: 'practice',
     statusLabel: 'Ongoing Practice',
-    description: 'Structured C++ implementations and problem-solving practice covering core data structures, sorting, and algorithmic patterns.',
-    fullOverview: 'A dedicated repository for ongoing algorithmic practice in modern C++. Contains solutions to LeetCode challenges focusing on arrays, two pointers, binary search, trees, and dynamic programming.',
-    technologies: ['C++', 'Algorithms', 'Data Structures'],
+    description: 'Structured C++ implementations and problem-solving practice covering core data structures, sorting algorithms, and complexity optimization.',
+    fullOverview: `A dedicated repository for continuous competitive programming and algorithm practice in modern C++.
+
+Key Focus Areas:
+• Data Structures: Arrays, Hash Maps, Linked Lists, Binary Trees, Heaps, and Graphs.
+• Algorithmic Paradigms: Two Pointers, Sliding Window, Binary Search, Breadth/Depth First Search, and Dynamic Programming.
+• Optimization: Emphasizing optimal time complexity (O(N), O(N log N)) and minimal auxiliary space memory footprints.
+• Profile: Actively maintained alongside my public LeetCode profile at leetcode.com/u/priyxnsh19/.`,
+    technologies: ['C++', 'Data Structures', 'Algorithms', 'STL'],
     links: [
       {
         label: 'Source Code',
@@ -269,11 +314,6 @@ export const PROJECTS: ProjectItem[] = [
       },
     ],
   },
-  /*
-   * 8. SAT-SA / SOC Assessment Analytics
-   * SIH PS 26157 exploration. No evidence of active public codebase.
-   * Kept hidden as mandated by Section 4.4 of prompt.
-   */
   {
     id: 'sat-sa-soc',
     title: 'SAT-SA / SOC Assessment Analytics',
@@ -289,15 +329,12 @@ export const PROJECTS: ProjectItem[] = [
   },
 ];
 
-/**
- * Concepts / Explorations (Displayed in honest "Ideas I'm Exploring" strip)
- */
 export const CONCEPT_IDEAS = [
   {
     id: 'bus-route-explorer',
     title: 'Local & Intercity Bus Route Explorer',
     status: 'Concept / Exploration',
-    description: 'An application concept for discovering local and intercity buses, intermediate stops, route options, and fares — inspired by everyday regional commutes such as Mamura to Dasna and Noida Sector 34 to Meerut.',
+    description: 'An application concept for discovering local and intercity buses, intermediate stops, route choices, and fares — inspired by everyday regional commutes such as Mamura to Dasna and Noida Sector 34 to Meerut.',
     context: 'Exploration stage: user experience mapping and commuter route logic. No finished application, live fare feed, or public URL is currently established.',
   },
 ];

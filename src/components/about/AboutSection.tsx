@@ -1,6 +1,13 @@
 import React from 'react';
 import { PROFILE, SOCIAL_LINKS } from '../../data/portfolio.ts';
-import { ExternalLink, Github, Linkedin, Award, Code2, Globe, MapPin, GraduationCap, Languages } from 'lucide-react';
+import { ExternalLink, Globe, MapPin, GraduationCap, Languages } from 'lucide-react';
+import {
+  LinkedInLogo,
+  GitHubLogo,
+  CredlyLogo,
+  LeetCodeLogo,
+  HackerRankLogo,
+} from '../ui/BrandLogos.tsx';
 
 export const AboutSection: React.FC = () => {
   return (
@@ -65,15 +72,25 @@ export const AboutSection: React.FC = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={profile.ariaLabel}
-                  className="flex items-center justify-between p-3.5 bg-white dark:bg-[#0d121d] border border-slate-200 dark:border-slate-800 rounded-xl hover:border-cyan-500/50 dark:hover:border-cyan-500/50 hover:shadow-xs transition-all duration-200 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
+                  className="flex items-center justify-between p-3.5 bg-white dark:bg-[#0d121d] border border-slate-200 dark:border-slate-800 rounded-xl hover:border-cyan-500/50 dark:hover:border-cyan-500/50 hover:shadow-md transition-all duration-200 hover:-translate-y-1 group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-cyan-500"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-lg bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-700 dark:text-slate-300 group-hover:text-cyan-500 transition-colors">
-                      {profile.platform === 'GitHub' && <Github className="w-4 h-4" />}
-                      {profile.platform === 'LinkedIn' && <Linkedin className="w-4 h-4" />}
-                      {profile.platform === 'Credly' && <Award className="w-4 h-4" />}
-                      {profile.platform === 'LeetCode' && <Code2 className="w-4 h-4" />}
-                      {profile.platform === 'HackerRank' && <Code2 className="w-4 h-4" />}
+                    <div className="w-9 h-9 rounded-lg bg-slate-100 dark:bg-slate-800/80 flex items-center justify-center text-slate-700 dark:text-slate-300 group-hover:scale-110 transition-transform">
+                      {profile.platform === 'LinkedIn' && (
+                        <LinkedInLogo className="w-5 h-5 text-[#0A66C2]" />
+                      )}
+                      {profile.platform === 'GitHub' && (
+                        <GitHubLogo className="w-5 h-5 text-slate-900 dark:text-white" />
+                      )}
+                      {profile.platform === 'Credly' && (
+                        <CredlyLogo className="w-5 h-5 text-[#FF6B00]" />
+                      )}
+                      {profile.platform === 'LeetCode' && (
+                        <LeetCodeLogo className="w-5 h-5 text-[#FFA116]" />
+                      )}
+                      {profile.platform === 'HackerRank' && (
+                        <HackerRankLogo className="w-5 h-5 text-[#00EA64]" />
+                      )}
                     </div>
                     <div>
                       <p className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-cyan-600 dark:group-hover:text-cyan-400 transition-colors">
