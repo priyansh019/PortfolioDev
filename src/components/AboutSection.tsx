@@ -7,7 +7,7 @@ export const AboutSection: React.FC = () => {
   return (
     <section
       id="about"
-      className="relative min-h-screen py-24 px-5 sm:px-8 md:px-12 lg:px-16"
+      className="relative min-h-screen py-24 px-5 sm:px-8 md:px-12 lg:px-16 scroll-mt-28"
       style={{ backgroundColor: '#051F20' }}
     >
       <div className="max-w-6xl mx-auto relative z-10">

@@ -9,6 +9,7 @@ import { TimelineSection } from './components/TimelineSection.tsx';
 import { CredentialsSection } from './components/CredentialsSection.tsx';
 import { ContactSection } from './components/ContactSection.tsx';
 import { MainframeModal } from './components/MainframeModal.tsx';
+import { ScrollReveal } from './components/ui/ScrollReveal.tsx';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<string>('hero');
@@ -70,38 +71,50 @@ export default function App() {
 
   return (
     <div className="relative w-full min-h-screen bg-[#051F20] text-[#DAF1DE] selection:bg-[#DAF1DE] selection:text-[#051F20]">
-      {/* Background Video with horizontal mouse scrub controller & scroll-depth scrim */}
+      {/* Background with restored red cyberpunk glow and forest depth scrim */}
       <BackgroundVideo />
 
-      {/* Mainframe Fixed Navbar with section tracking */}
+      {/* Mainframe Fixed Navbar with section tracking (sound toggle removed from top) */}
       <MainframeNavbar
         activeSection={activeSection}
         onNavigate={handleNavigate}
         onOpenModal={handleOpenModal}
       />
 
-      {/* Main Scrollable Content Structure: Ordered with About First */}
+      {/* Main Scrollable Content Structure with Magical Scroll-Reveal Animations */}
       <main className="relative z-10 w-full">
-        {/* 0. Hero Section */}
+        {/* 0. Hero Section with SplineScene 3D Robot & Editorial Copy */}
         <MainframeHero onNavigate={handleNavigate} />
 
         {/* 1. About Priyansh Section (Introduces Person First) */}
-        <AboutSection />
+        <ScrollReveal>
+          <AboutSection />
+        </ScrollReveal>
 
-        {/* 2. Featured Projects Section (Dynamic color changes + click to open details) */}
-        <ProjectsSection />
+        {/* 2. Featured Projects Section (Authentic GitHub Projects) */}
+        <ScrollReveal>
+          <ProjectsSection />
+        </ScrollReveal>
 
-        {/* 3. Technical Skills Section */}
-        <SkillsSection />
+        {/* 3. Technical Skills Section (Scrollable & Expandable Cards) */}
+        <ScrollReveal>
+          <SkillsSection />
+        </ScrollReveal>
 
-        {/* 4. Leadership & Timeline (Phoenix Technical Society RoboVerse 200+) */}
-        <TimelineSection />
+        {/* 4. Leadership & Timeline (Live Roadmap / Mapline) */}
+        <ScrollReveal>
+          <TimelineSection />
+        </ScrollReveal>
 
-        {/* 5. Credentials & Honors (Credly verified badges) */}
-        <CredentialsSection />
+        {/* 5. Credentials & Honors (Hover-highlighting cards) */}
+        <ScrollReveal>
+          <CredentialsSection />
+        </ScrollReveal>
 
         {/* 6. Contact & Footer Section */}
-        <ContactSection onScrollToTop={() => handleNavigate('hero')} />
+        <ScrollReveal>
+          <ContactSection onScrollToTop={() => handleNavigate('hero')} />
+        </ScrollReveal>
       </main>
 
       {/* Interactive Detail Modal / Drawer */}

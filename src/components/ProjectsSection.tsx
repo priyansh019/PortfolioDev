@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ExternalLink, Github, ChevronRight, Sparkles, Terminal, Shield, Cpu, Bot, Code } from 'lucide-react';
+import { ExternalLink, Github, ChevronRight, Sparkles, Terminal, Shield, Cpu, Bot, Code, Landmark, BarChart3, Users, Network } from 'lucide-react';
 import { PROJECTS, DetailedProject } from '../data/projects.ts';
 import { soundManager } from '../utils/sound.ts';
 import { ProjectDetailModal } from './ProjectDetailModal.tsx';
@@ -14,33 +14,12 @@ const PROJECT_THEME_COLORS: Record<
     icon: React.FC<{ className?: string }>;
   }
 > = {
-  netsecure: {
+  sentinelpy: {
     primary: '#38bdf8',
     light: 'rgba(56, 189, 248, 0.12)',
     border: 'rgba(56, 189, 248, 0.45)',
     glow: 'rgba(56, 189, 248, 0.25)',
     icon: Shield,
-  },
-  'novavoice-calendar-bridge': {
-    primary: '#f59e0b',
-    light: 'rgba(245, 158, 11, 0.12)',
-    border: 'rgba(245, 158, 11, 0.45)',
-    glow: 'rgba(245, 158, 11, 0.25)',
-    icon: Terminal,
-  },
-  sign2voice: {
-    primary: '#a855f7',
-    light: 'rgba(168, 85, 247, 0.12)',
-    border: 'rgba(168, 85, 247, 0.45)',
-    glow: 'rgba(168, 85, 247, 0.25)',
-    icon: Bot,
-  },
-  'iot-robotics-prototypes': {
-    primary: '#34d399',
-    light: 'rgba(52, 211, 153, 0.12)',
-    border: 'rgba(52, 211, 153, 0.45)',
-    glow: 'rgba(52, 211, 153, 0.25)',
-    icon: Cpu,
   },
   clockwork: {
     primary: '#ec4899',
@@ -49,6 +28,34 @@ const PROJECT_THEME_COLORS: Record<
     glow: 'rgba(236, 72, 153, 0.25)',
     icon: Sparkles,
   },
+  'robotics-line-follower': {
+    primary: '#f97316',
+    light: 'rgba(249, 115, 22, 0.12)',
+    border: 'rgba(249, 115, 22, 0.45)',
+    glow: 'rgba(249, 115, 22, 0.25)',
+    icon: Cpu,
+  },
+  workforceiq: {
+    primary: '#10b981',
+    light: 'rgba(16, 185, 129, 0.12)',
+    border: 'rgba(16, 185, 129, 0.45)',
+    glow: 'rgba(16, 185, 129, 0.25)',
+    icon: Users,
+  },
+  'placement-report': {
+    primary: '#6366f1',
+    light: 'rgba(99, 102, 241, 0.12)',
+    border: 'rgba(99, 102, 241, 0.45)',
+    glow: 'rgba(99, 102, 241, 0.25)',
+    icon: BarChart3,
+  },
+  impactlink: {
+    primary: '#3b82f6',
+    light: 'rgba(59, 130, 246, 0.12)',
+    border: 'rgba(59, 130, 246, 0.45)',
+    glow: 'rgba(59, 130, 246, 0.25)',
+    icon: Network,
+  },
   'leetcode-solutions': {
     primary: '#818cf8',
     light: 'rgba(129, 140, 248, 0.12)',
@@ -56,25 +63,28 @@ const PROJECT_THEME_COLORS: Record<
     glow: 'rgba(129, 140, 248, 0.25)',
     icon: Code,
   },
+  'novavoice-calendar-bridge': {
+    primary: '#f59e0b',
+    light: 'rgba(245, 158, 11, 0.12)',
+    border: 'rgba(245, 158, 11, 0.45)',
+    glow: 'rgba(245, 158, 11, 0.25)',
+    icon: Terminal,
+  },
 };
 
 export const ProjectsSection: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
-  const [activeProjectId, setActiveProjectId] = useState<string>('netsecure');
+  const [activeProjectId, setActiveProjectId] = useState<string>('sentinelpy');
   const [modalProject, setModalProject] = useState<DetailedProject | null>(null);
 
-  const categories = ['All', 'Cybersecurity', 'AI & Machine Learning', 'IoT & Robotics', 'Algorithms & Practice'];
+  const categories = ['All', 'Cybersecurity', 'AI & Automation', 'Embedded & Robotics', 'Web Applications', 'Algorithms & Practice', 'APIs & Systems'];
 
   const filteredProjects =
     selectedCategory === 'All'
       ? PROJECTS
-      : PROJECTS.filter(
-          (p) =>
-            p.category === selectedCategory ||
-            (selectedCategory === 'AI & Machine Learning' && p.category === 'APIs & Systems')
-        );
+      : PROJECTS.filter((p) => p.category === selectedCategory);
 
-  const activeTheme = PROJECT_THEME_COLORS[activeProjectId] || PROJECT_THEME_COLORS.netsecure;
+  const activeTheme = PROJECT_THEME_COLORS[activeProjectId] || PROJECT_THEME_COLORS.sentinelpy;
 
   const handleCardClick = (project: DetailedProject) => {
     soundManager.playClick();
@@ -85,7 +95,7 @@ export const ProjectsSection: React.FC = () => {
     <>
       <section
         id="projects"
-        className="relative min-h-screen py-24 px-6 sm:px-10 md:px-14 lg:px-20 transition-colors duration-700 ease-out"
+        className="relative min-h-screen py-24 px-6 sm:px-10 md:px-14 lg:px-20 transition-colors duration-700 ease-out scroll-mt-28"
         style={{
           backgroundColor: '#051F20',
         }}
@@ -105,11 +115,11 @@ export const ProjectsSection: React.FC = () => {
           <div className="mb-12">
             <div className="flex items-center gap-2 mb-2">
               <span className="text-xs font-mono tracking-widest uppercase text-[#8EB69B]">
-                02 // PORTFOLIO WORK
+                02 // GITHUB PROJECTS & SYSTEMS
               </span>
               <span className="text-[#163832]">·</span>
               <span className="text-xs font-mono text-[#8EB69B]/60">
-                Click any project to inspect
+                github.com/priyansh019
               </span>
             </div>
 
@@ -122,7 +132,7 @@ export const ProjectsSection: React.FC = () => {
                   Featured Projects
                 </h2>
                 <p className="text-sm sm:text-base text-[#8EB69B] mt-2 max-w-xl leading-relaxed">
-                  Full-stack cybersecurity systems, Gemini API agents, and embedded robotics. Click any card to open in-depth architecture and code takeaways.
+                  Authentic software systems from my GitHub repository: network scanners, AI workflow tools, banking prototypes, and algorithmic solutions.
                 </p>
               </div>
 
@@ -136,7 +146,7 @@ export const ProjectsSection: React.FC = () => {
                       soundManager.playClick();
                       setSelectedCategory(cat);
                     }}
-                    onMouseEnter={soundManager.playHover}
+                    onMouseEnter={() => soundManager.playHover()}
                     className={`px-3 py-1.5 rounded-lg text-xs font-mono transition-all duration-200 cursor-pointer ${
                       selectedCategory === cat
                         ? 'bg-[#DAF1DE] text-[#051F20] font-semibold shadow-xs'
@@ -153,7 +163,7 @@ export const ProjectsSection: React.FC = () => {
           {/* Projects Cards Grid with Dynamic Color Changes */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {filteredProjects.map((project) => {
-              const theme = PROJECT_THEME_COLORS[project.id] || PROJECT_THEME_COLORS.netsecure;
+              const theme = PROJECT_THEME_COLORS[project.id] || PROJECT_THEME_COLORS.sentinelpy;
               const isHovered = activeProjectId === project.id;
               const ProjectIcon = theme.icon;
 
@@ -237,7 +247,7 @@ export const ProjectsSection: React.FC = () => {
                   {/* Card Footer: View Details Callout & Action Links */}
                   <div className="pt-4 border-t border-[#163832] flex flex-wrap items-center justify-between gap-3">
                     <span className="text-xs font-mono text-[#DAF1DE] group-hover:underline flex items-center gap-1">
-                      <span>Click to view details</span>
+                      <span>Click to inspect details</span>
                       <ChevronRight className="w-3.5 h-3.5 text-[#8EB69B] group-hover:translate-x-1 transition-transform" />
                     </span>
 
@@ -251,8 +261,8 @@ export const ProjectsSection: React.FC = () => {
                           href={link.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          onMouseEnter={soundManager.playHover}
-                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 shadow-sm hover:scale-105"
+                          onMouseEnter={() => soundManager.playHover()}
+                          className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium transition-all duration-200 shadow-sm hover:scale-105 cursor-pointer"
                           style={{
                             backgroundColor: isHovered ? theme.primary : '#DAF1DE',
                             color: '#051F20',

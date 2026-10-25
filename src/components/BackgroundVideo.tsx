@@ -1,15 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const VIDEO_URL =
-  'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260826_041744_63efcd78-bf7d-4039-99e2-2461e8a61903.mp4';
-
+/**
+ * Atmospheric Background Container combining the restored red ambient glow
+ * with deep forest obsidian canvas (#051F20) and technical subtle grid.
+ */
 export const BackgroundVideo: React.FC = () => {
-  const videoRef = useRef<HTMLVideoElement | null>(null);
-  const targetTimeRef = useRef<number>(0);
-  const currentTimeRef = useRef<number>(0);
-  const isSeekingRef = useRef<boolean>(false);
-  const lastSeekTimeRef = useRef<number>(0);
-  const [isLoaded, setIsLoaded] = useState(false);
   const [scrollY, setScrollY] = useState(0);
 
   useEffect(() => {
@@ -20,102 +15,42 @@ export const BackgroundVideo: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
-
-    const handleLoadedMetadata = () => {
-      if (video.duration && !isNaN(video.duration)) {
-        targetTimeRef.current = Math.min(0.2, video.duration * 0.05);
-        currentTimeRef.current = targetTimeRef.current;
-        video.currentTime = targetTimeRef.current;
-        setIsLoaded(true);
-      }
-    };
-
-    video.addEventListener('loadedmetadata', handleLoadedMetadata);
-    if (video.readyState >= 1) {
-      handleLoadedMetadata();
-    }
-
-    // High performance seek controller with gentle throttling
-    let animId: number;
-    const renderLoop = () => {
-      const now = performance.now();
-      // Only seek if in hero section and enough time (70ms) has elapsed since last seek
-      if (
-        video &&
-        video.duration &&
-        !isNaN(video.duration) &&
-        !isSeekingRef.current &&
-        now - lastSeekTimeRef.current > 70
-      ) {
-        // Smoothly interpolate current time toward target
-        const diff = targetTimeRef.current - currentTimeRef.current;
-        if (Math.abs(diff) > 0.04) {
-          currentTimeRef.current += diff * 0.15;
-          try {
-            isSeekingRef.current = true;
-            lastSeekTimeRef.current = now;
-            video.currentTime = currentTimeRef.current;
-          } catch {
-            isSeekingRef.current = false;
-          }
-        }
-      }
-      animId = requestAnimationFrame(renderLoop);
-    };
-
-    animId = requestAnimationFrame(renderLoop);
-
-    // Smooth horizontal mouse tracker (only active when near top hero)
-    const handleMouseMove = (e: MouseEvent) => {
-      if (window.scrollY > window.innerHeight) return;
-      if (!video.duration || isNaN(video.duration)) return;
-
-      const normalizedX = Math.max(0, Math.min(1, e.clientX / window.innerWidth));
-      // Map mouse position to video duration smoothly
-      targetTimeRef.current = normalizedX * video.duration;
-    };
-
-    window.addEventListener('mousemove', handleMouseMove, { passive: true });
-
-    return () => {
-      video.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      window.removeEventListener('mousemove', handleMouseMove);
-      cancelAnimationFrame(animId);
-    };
-  }, []);
-
-  const handleSeeked = () => {
-    isSeekingRef.current = false;
-  };
-
-  // Compute depth scrim based on scroll position
-  const scrollProgress = Math.min(1, scrollY / 500);
-  const overlayOpacity = 0.4 + scrollProgress * 0.52; // from 40% in hero up to 92% in deep sections
+  const scrollProgress = Math.min(1, scrollY / 700);
+  const overlayOpacity = 0.35 + scrollProgress * 0.55;
 
   return (
     <div
       className="fixed inset-0 z-0 w-full h-full pointer-events-none select-none overflow-hidden"
       aria-hidden="true"
     >
-      <video
-        ref={videoRef}
-        src={VIDEO_URL}
-        muted
-        playsInline
-        preload="auto"
-        onSeeked={handleSeeked}
-        className="w-full h-full object-cover transition-opacity duration-1000 ease-out"
+      {/* Base Canvas Color */}
+      <div className="absolute inset-0 bg-[#051F20]" />
+
+      {/* Restored Red Cyberpunk Glow in Hero top right */}
+      <div
+        className="absolute -top-32 right-0 w-[750px] h-[750px] rounded-full blur-[180px] opacity-55 transition-transform duration-700 pointer-events-none"
         style={{
-          objectPosition: '70% center',
-          opacity: isLoaded ? 1 : 0.7,
+          background: 'radial-gradient(circle, rgba(225, 29, 72, 0.6) 0%, rgba(185, 28, 28, 0.35) 50%, transparent 75%)',
+          transform: `translateY(${scrollY * 0.12}px)`,
         }}
+      />
+
+      {/* Deep Forest Emerald Glow in bottom left */}
+      <div
+        className="absolute top-1/2 -left-32 w-[600px] h-[600px] rounded-full blur-[190px] opacity-30 transition-transform duration-700 pointer-events-none"
+        style={{
+          background: 'radial-gradient(circle, #235347 0%, #0B2B26 50%, transparent 75%)',
+          transform: `translateY(-${scrollY * 0.1}px)`,
+        }}
+      />
+
+      {/* Minimal technical filmic grid in sage tint #8EB69B */}
+      <div
+        className="absolute inset-0 opacity-[0.04] bg-[linear-gradient(to_right,#8EB69B_1px,transparent_1px),linear-gradient(to_bottom,#8EB69B_1px,transparent_1px)] bg-[size:4.5rem_4.5rem]"
         aria-hidden="true"
       />
 
-      {/* Dynamic Forest-Tone Scrim using exact palette #051F20 */}
+      {/* Dynamic Forest-Tone Scrim deepening as user scrolls */}
       <div
         className="absolute inset-0 transition-opacity duration-300 ease-out"
         style={{
@@ -125,17 +60,8 @@ export const BackgroundVideo: React.FC = () => {
         aria-hidden="true"
       />
 
-      {/* Atmospheric radial vignette with deep spruce #0B2B26 tone */}
-      <div
-        className="absolute inset-0 bg-radial-[circle_at_20%_80%] from-[#0B2B26]/60 via-transparent to-[#051F20]/90"
-        aria-hidden="true"
-      />
-
-      {/* Minimal subtle technical filmic grid in sage tint #8EB69B */}
-      <div
-        className="absolute inset-0 opacity-[0.06] bg-[linear-gradient(to_right,#8EB69B_1px,transparent_1px),linear-gradient(to_bottom,#8EB69B_1px,transparent_1px)] bg-[size:4rem_4rem]"
-        aria-hidden="true"
-      />
+      {/* Radial vignette border */}
+      <div className="absolute inset-0 bg-radial-[circle_at_50%_50%] from-transparent via-[#051F20]/40 to-[#051F20]/95" />
     </div>
   );
 };

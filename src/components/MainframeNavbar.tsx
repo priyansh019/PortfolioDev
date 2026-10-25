@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Volume2, VolumeX, Github, Linkedin, ExternalLink } from 'lucide-react';
+import { Github, Linkedin, ExternalLink } from 'lucide-react';
 import { soundManager } from '../utils/sound.ts';
 import { PROFILE } from '../data/profile.ts';
 
@@ -14,7 +14,6 @@ export const MainframeNavbar: React.FC<MainframeNavbarProps> = ({
   onNavigate,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [soundEnabled, setSoundEnabled] = useState(soundManager.isEnabled());
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -47,14 +46,6 @@ export const MainframeNavbar: React.FC<MainframeNavbarProps> = ({
     onNavigate('contact');
   };
 
-  const handleToggleSound = () => {
-    const newState = soundManager.toggle();
-    setSoundEnabled(newState);
-    if (newState) {
-      soundManager.playClick();
-    }
-  };
-
   return (
     <>
       <header
@@ -73,7 +64,7 @@ export const MainframeNavbar: React.FC<MainframeNavbarProps> = ({
           }}
           className="flex flex-row items-center gap-2.5 sm:gap-3 cursor-pointer select-none group bg-transparent border-0 p-0 text-left"
           aria-label="Scroll to top of portfolio"
-          onMouseEnter={soundManager.playHover}
+          onMouseEnter={() => soundManager.playHover()}
         >
           <span
             className="text-[20px] sm:text-[24px] tracking-tight leading-none text-[#DAF1DE] font-medium transition-colors group-hover:text-white"
@@ -90,9 +81,9 @@ export const MainframeNavbar: React.FC<MainframeNavbarProps> = ({
           </span>
         </button>
 
-        {/* Desktop nav links with spacious uncongested layout (center, hidden below md) */}
+        {/* Desktop nav links with prominent active section highlight (center, hidden below md) */}
         <nav
-          className="hidden md:flex flex-row items-center gap-6 lg:gap-8 leading-none"
+          className="hidden md:flex flex-row items-center gap-1.5 bg-[#0B2B26]/85 border border-[#235347]/80 rounded-full p-1.5 backdrop-blur-md shadow-lg shadow-[#051F20]/50"
           style={{ fontFamily: 'var(--font-body)' }}
           aria-label="Desktop Navigation"
         >
@@ -103,81 +94,43 @@ export const MainframeNavbar: React.FC<MainframeNavbarProps> = ({
                 key={item.id}
                 type="button"
                 onClick={() => handleLinkClick(item.id)}
-                onMouseEnter={soundManager.playHover}
-                className={`text-[15px] lg:text-[16px] transition-all duration-200 cursor-pointer bg-transparent border-0 py-1.5 px-1 font-medium tracking-normal relative ${
+                onMouseEnter={() => soundManager.playHover()}
+                className={`text-[14px] lg:text-[15px] transition-all duration-200 cursor-pointer rounded-full py-1.5 px-4 font-medium tracking-normal relative flex items-center gap-1.5 ${
                   isActive
-                    ? 'text-[#DAF1DE]'
-                    : 'text-[#8EB69B] hover:text-[#DAF1DE]'
+                    ? 'bg-[#DAF1DE] text-[#051F20] font-bold shadow-md shadow-[#DAF1DE]/25 scale-[1.03]'
+                    : 'text-[#8EB69B] hover:text-[#DAF1DE] hover:bg-[#163832]/70'
                 }`}
               >
-                <span>{item.label}</span>
                 {isActive && (
-                  <span className="absolute -bottom-1 left-0 right-0 h-[2px] bg-[#DAF1DE] rounded-full animate-in fade-in" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#051F20] animate-pulse" />
                 )}
+                <span>{item.label}</span>
               </button>
             );
           })}
         </nav>
 
-        {/* Desktop CTA & Sound Toggle (right, hidden below md) */}
-        <div className="hidden md:flex items-center gap-5">
-          {/* Subtle Sound Toggle */}
-          <button
-            type="button"
-            onClick={handleToggleSound}
-            onMouseEnter={soundManager.playHover}
-            className={`flex items-center gap-1.5 text-xs font-mono tracking-wider transition-all cursor-pointer px-3 py-1.5 rounded-full border backdrop-blur-xs ${
-              soundEnabled
-                ? 'border-[#235347] bg-[#0B2B26] text-[#DAF1DE]'
-                : 'border-[#163832] bg-[#051F20]/80 text-[#8EB69B]/60 hover:text-[#DAF1DE]'
-            }`}
-            title={soundEnabled ? 'Mute audio feedback' : 'Unmute audio feedback'}
-            aria-label="Toggle interactive audio feedback"
-          >
-            {soundEnabled ? (
-              <>
-                <Volume2 className="w-3.5 h-3.5 text-[#8EB69B]" />
-                <span className="text-[11px] font-semibold">SOUND ON</span>
-              </>
-            ) : (
-              <>
-                <VolumeX className="w-3.5 h-3.5 text-[#8EB69B]/40" />
-                <span className="text-[11px]">MUTED</span>
-              </>
-            )}
-          </button>
-
+        {/* Desktop CTA (right, hidden below md) - Sound toggle removed from top as requested */}
+        <div className="hidden md:flex items-center gap-4">
           <a
             href="#contact"
             onClick={handleGetInTouch}
-            onMouseEnter={soundManager.playHover}
-            className="text-[14px] lg:text-[15px] font-medium text-[#051F20] bg-[#DAF1DE] hover:bg-[#8EB69B] px-4 py-2 rounded-full transition-all duration-200 cursor-pointer shadow-sm"
+            onMouseEnter={() => soundManager.playHover()}
+            className="text-[14px] lg:text-[15px] font-medium text-[#051F20] bg-[#DAF1DE] hover:bg-[#8EB69B] px-5 py-2.5 rounded-full transition-all duration-200 cursor-pointer shadow-sm transform hover:-translate-y-0.5 active:translate-y-0"
           >
             Get in touch
           </a>
         </div>
 
         {/* Mobile controls & hamburger (visible below md) */}
-        <div className="md:hidden flex items-center gap-2.5">
-          <button
-            type="button"
-            onClick={handleToggleSound}
-            aria-label="Toggle sound feedback"
-            className="p-2 rounded-full border border-[#163832] bg-[#0B2B26] text-[#8EB69B]"
-          >
-            {soundEnabled ? (
-              <Volume2 className="w-4 h-4 text-[#8EB69B]" />
-            ) : (
-              <VolumeX className="w-4 h-4 text-[#8EB69B]/40" />
-            )}
-          </button>
-
+        <div className="md:hidden flex items-center">
           <button
             type="button"
             onClick={() => {
               soundManager.playClick();
               setMobileMenuOpen(!mobileMenuOpen);
             }}
+            onMouseEnter={() => soundManager.playHover()}
             aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
             aria-expanded={mobileMenuOpen}
             className="flex flex-col justify-center items-center w-8 h-8 gap-[5px] cursor-pointer bg-transparent border-0 p-0 z-40 focus:outline-none"
@@ -213,23 +166,35 @@ export const MainframeNavbar: React.FC<MainframeNavbarProps> = ({
           Navigation // Priyansh Singh
         </div>
 
-        {navItems.map((item) => (
-          <button
-            key={item.id}
-            type="button"
-            onClick={() => handleLinkClick(item.id)}
-            className={`text-[28px] sm:text-[32px] font-medium transition-all text-left cursor-pointer bg-transparent border-0 p-0 tracking-tight ${
-              activeSection === item.id ? 'text-[#DAF1DE] translate-x-2' : 'text-[#8EB69B]'
-            }`}
-          >
-            {item.label}
-          </button>
-        ))}
+        {navItems.map((item) => {
+          const isActive = activeSection === item.id;
+          return (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => handleLinkClick(item.id)}
+              onMouseEnter={() => soundManager.playHover()}
+              className={`text-[24px] sm:text-[28px] font-medium transition-all text-left cursor-pointer border-0 py-2 px-4 rounded-2xl tracking-tight flex items-center justify-between w-full ${
+                isActive
+                  ? 'bg-[#DAF1DE] text-[#051F20] font-bold shadow-md'
+                  : 'text-[#8EB69B] hover:text-[#DAF1DE] bg-transparent'
+              }`}
+            >
+              <span>{item.label}</span>
+              {isActive && (
+                <span className="text-xs font-mono px-2.5 py-0.5 rounded-full bg-[#051F20] text-[#DAF1DE]">
+                  CURRENT
+                </span>
+              )}
+            </button>
+          );
+        })}
 
         <div className="pt-4 border-t border-[#163832] w-full flex flex-col gap-4">
           <a
             href="#contact"
             onClick={handleGetInTouch}
+            onMouseEnter={() => soundManager.playHover()}
             className="text-[28px] sm:text-[32px] font-medium text-[#DAF1DE] underline underline-offset-4 hover:text-white transition-colors cursor-pointer tracking-tight"
           >
             Get in touch
@@ -240,6 +205,8 @@ export const MainframeNavbar: React.FC<MainframeNavbarProps> = ({
               href={PROFILE.github}
               target="_blank"
               rel="noopener noreferrer"
+              onMouseEnter={() => soundManager.playHover()}
+              onClick={() => soundManager.playClick()}
               className="inline-flex items-center gap-1.5 text-xs font-mono text-[#8EB69B] hover:text-[#DAF1DE]"
             >
               <Github className="w-4 h-4" />
@@ -250,6 +217,8 @@ export const MainframeNavbar: React.FC<MainframeNavbarProps> = ({
               href={PROFILE.linkedin}
               target="_blank"
               rel="noopener noreferrer"
+              onMouseEnter={() => soundManager.playHover()}
+              onClick={() => soundManager.playClick()}
               className="inline-flex items-center gap-1.5 text-xs font-mono text-[#8EB69B] hover:text-[#DAF1DE]"
             >
               <Linkedin className="w-4 h-4" />

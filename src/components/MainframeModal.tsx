@@ -104,7 +104,7 @@ export const MainframeModal: React.FC<MainframeModalProps> = ({
 
   if (!isOpen) return null;
 
-  const categories = ['All', 'Cybersecurity', 'AI & Machine Learning', 'IoT & Robotics', 'Algorithms & Practice'];
+  const categories = ['All', 'Cybersecurity', 'AI & Automation', 'Embedded & Robotics', 'Web Applications', 'Algorithms & Practice'];
 
   const filteredProjects =
     projectCategory === 'All'
@@ -112,7 +112,7 @@ export const MainframeModal: React.FC<MainframeModalProps> = ({
       : PROJECTS.filter(
           (p) =>
             p.category === projectCategory ||
-            (projectCategory === 'AI & Machine Learning' && p.category === 'APIs & Systems')
+            (projectCategory === 'AI & Automation' && (p.category === 'AI & Automation' || p.category === 'APIs & Systems'))
         );
 
   const handleTabChange = (tab: ModalTab) => {
@@ -129,13 +129,13 @@ export const MainframeModal: React.FC<MainframeModalProps> = ({
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-10 bg-[#051F20]/90 backdrop-blur-2xl animate-in fade-in duration-200"
+      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-8 bg-[#051F20]/95 backdrop-blur-2xl animate-in fade-in duration-200"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
     >
       <div
-        className="relative w-full max-w-4xl bg-[#0B2B26] border border-[#235347] rounded-3xl p-5 sm:p-8 text-[#DAF1DE] shadow-2xl max-h-[92vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200"
+        className="relative w-full max-w-4xl bg-[#0B2B26] border border-[#235347] rounded-2xl sm:rounded-3xl p-5 sm:p-8 text-[#DAF1DE] shadow-[0_25px_60px_-15px_rgba(5,31,32,0.9)] max-h-[86vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
         style={{ fontFamily: 'var(--font-body)' }}
       >

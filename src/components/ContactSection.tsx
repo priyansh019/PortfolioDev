@@ -20,7 +20,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({ onScrollToTop })
   return (
     <section
       id="contact"
-      className="relative py-24 px-5 sm:px-8 md:px-12 lg:px-16 border-t border-[#163832]"
+      className="relative py-24 px-5 sm:px-8 md:px-12 lg:px-16 border-t border-[#163832] scroll-mt-28"
       style={{ backgroundColor: '#051F20' }}
     >
       <div className="max-w-6xl mx-auto relative z-10">
