@@ -11,26 +11,27 @@ import {
  * Global Configuration Flags
  */
 export const CONFIG = {
-  // Mobile number exists in resume/export but is deliberately kept out of public UI
   SHOW_PHONE: false,
-  // Set to '/resume.pdf' when a verified PDF asset is added to /public
   RESUME_URL: null as string | null,
-  // Empty until a verified canonical domain is assigned
   CANONICAL_URL: '',
 };
 
 export const PROFILE = {
   name: 'Priyansh Singh',
   legalName: 'Priyansh Kumar Singh',
-  headline: 'B.Tech undergrad (ECE) at AKGEC | Exploring Web Development & Cybersecurity | Exploring Python, C/C++, & JS | Seeking internships to grow & contribute',
-  heroHeadline: 'I turn curious ideas into useful systems.',
-  heroSubheadline: 'ECE undergraduate at AKGEC, exploring full-stack development, AI-powered applications, cybersecurity, and connected systems.',
-  statusNotice: 'Open to internships in web development and information security.',
+  title: 'DESIGN & SYSTEMS ENGINEER',
+  headline: 'B.Tech undergrad (ECE) at AKGEC | Exploring Web Development, AI & Cybersecurity | Phoenix Technical Society',
+  heroHeadline: 'I TURN CURIOUS IDEAS INTO USEFUL SYSTEMS.',
+  heroSubheadline: 'ECE undergraduate at AKGEC, exploring full-stack engineering, 3D interactive graphics, AI-driven architectures, and network reconnaissance.',
+  statusNotice: 'AVAILABLE FOR INTERNSHIPS · WEB DEV & INFORMATION SECURITY',
   location: 'Ghaziabad, Uttar Pradesh, India',
+  coordinates: '28.6692° N, 77.4538° E',
   college: 'Ajay Kumar Garg Engineering College (AKGEC), Ghaziabad',
   email: 'priyansh.singh019@gmail.com',
   languages: 'Japanese (Elementary)',
-  summary: `I'm Priyansh Kumar Singh, an Electronics and Communication Engineering undergraduate at Ajay Kumar Garg Engineering College (AKGEC), Ghaziabad. I have a deep passion for building robust software systems, network reconnaissance tools, and AI-driven automation workflows. I believe in writing transparent, maintainable code, understanding fundamental computer systems and protocols, and turning curiosity into functional, production-ready applications.`,
+  summary: `I’m part of the Phoenix technical society at my college, where I’ve helped organise technical events like RoboVerse, which saw participation from 200+ students. I’m also part of AI Skill House, an initiative by IICT × MIB × Google × YouTube, and a participant in GDG Code for Community 2.0.
+
+I have experience with C++, Python, web development, AI, IoT, and cybersecurity projects. I’m also a contributor in GSSoC 2026 and have participated in hackathons and CTF competitions. Through these experiences, I’ve developed teamwork, coordination, and problem-solving skills. I enjoy learning new technologies, connecting with people in the tech community, and helping organise events. I’m always willing to take responsibility, contribute wherever needed, and learn from others.`,
 };
 
 export const SOCIAL_LINKS: SocialLink[] = [
@@ -72,16 +73,27 @@ export const SOCIAL_LINKS: SocialLink[] = [
   },
 ];
 
-export const PROJECTS: ProjectItem[] = [
+export interface AengelProject extends ProjectItem {
+  number: string;
+  year: string;
+  gemstoneColor: string;
+  roleSummary: string;
+  technicalConstraints: string;
+}
+
+export const PROJECTS: AengelProject[] = [
   {
     id: 'sentinelpy',
-    title: 'SentinelPy',
+    number: '01 / 05',
+    year: '2025 – 2026',
+    gemstoneColor: '#00f0ff', // Cyan crystal
+    title: 'SENTINELPY',
     subtitle: 'Network Security Scanner & Reconnaissance Platform',
-    category: 'Cybersecurity',
+    category: 'CYBERSECURITY',
     categories: ['Cybersecurity', 'APIs & Systems'],
     status: 'deployed',
     statusLabel: 'Live / Deployed',
-    description: 'Full-stack network-security scanning platform designed for scan orchestration, port inspection, service fingerprinting, and automated vulnerability classification.',
+    description: 'A full-stack network-security scanning platform designed for scan orchestration, port inspection, service fingerprinting, and automated vulnerability classification.',
     fullOverview: `SentinelPy is a full-stack network reconnaissance and vulnerability discovery suite. Built from the ground up to automate port probing, protocol identification, and preliminary risk categorization without external heavy dependencies.
 
 Key Technical Architecture:
@@ -90,7 +102,9 @@ Key Technical Architecture:
 • Core Scanning Engine: Native multi-threaded Python engine executing TCP socket handshakes, port state evaluation (Open, Filtered, Closed), and service banner grabbing (HTTP/Nginx, SSH, SMTP).
 • Vulnerability Correlation: Maps recognized server headers and banner signatures against known common risk vectors for automated severity scoring.
 • API Documentation: Integrated Swagger/OpenAPI docs hosted directly on Render at /docs.`,
-    technologies: ['React', 'Vite', 'FastAPI', 'Python', 'TCP Sockets', 'Render'],
+    roleSummary: 'Engineered the full-stack architecture from system design to scanning engine. Crafted the FastAPI asynchronous pipeline, multi-threaded TCP network probe workers, and responsive dashboard.',
+    technicalConstraints: 'Raw asynchronous sockets require non-blocking I/O routines so scan loops don’t choke worker threads. Port state evaluation handles dropped SYN packets with dynamic timeout backoff. Hosted on Render free tier (idle instances wake on request).',
+    technologies: ['FastAPI', 'Python', 'React', 'TCP Sockets', 'Vite', 'Render'],
     notes: 'Hosted on Render free tier; service may take a moment to wake on first load due to idle instance spin-up.',
     links: [
       {
@@ -115,9 +129,12 @@ Key Technical Architecture:
   },
   {
     id: 'clockwork',
-    title: 'ClockWork',
-    subtitle: 'AI-Powered Everyday Tasks & Workflow Automation',
-    category: 'AI & Automation',
+    number: '02 / 05',
+    year: '2025',
+    gemstoneColor: '#a855f7', // Violet crystal
+    title: 'CLOCKWORK',
+    subtitle: 'AI-Powered Everyday Tasks & Automated Workflows',
+    category: 'AI & AUTOMATION',
     categories: ['AI & Automation', 'Web Applications'],
     status: 'deployed',
     statusLabel: 'Live / Deployed',
@@ -129,6 +146,8 @@ Key Technical Architecture:
 • Gemini API Pipeline: Leverages Google's Gemini models for context-aware task distillation, automatic priority calculation (Urgent, High, Normal), and step-by-step checklist generation.
 • Interactive UI: Clean, responsive user interface featuring quick-add inputs, animated status transitions, and dynamic task filtering.
 • Cloud Edge Hosting: Continuously deployed on Vercel with zero cold-start delay for immediate accessibility.`,
+    roleSummary: 'Architected the TypeScript interface, structured prompt engineering pipeline, and state synchronization with Google Gemini API.',
+    technicalConstraints: 'Low-latency natural language parsing requires strict schema validation on Gemini outputs to avoid hallucinatory task formats. Deployed on Vercel with automated CI/CD.',
     technologies: ['TypeScript', 'Gemini API', 'React', 'Vercel', 'Tailwind CSS'],
     links: [
       {
@@ -146,53 +165,26 @@ Key Technical Architecture:
     ],
   },
   {
-    id: 'novabank',
-    title: 'NovaBank',
-    subtitle: 'Private Banking Interface & Financial Dashboard Concept',
-    category: 'Web Applications',
-    categories: ['Web Applications'],
-    status: 'deployed',
-    statusLabel: 'Live / Deployed',
-    description: 'A modern web interface concept exploring private-banking dashboards, account metrics, simulated transaction ledger, and asset management.',
-    fullOverview: `NovaBank is an editorial design and engineering study for a high-end private banking interface. It explores how financial clarity, data density, and security-centric workflows can be presented cleanly.
-
-Key Technical Highlights:
-• Frontend Architecture: Responsive web application showcasing account cards, currency switches, quick-transfer dialogs, and balance timeline visualizers.
-• Backend Modules: Python files handling mock transaction validation, balance state updates, and account ledger integrity simulations.
-• Visual Polish: High-contrast data presentation, tabular numerical alignment (tabular-nums), and responsive layouts for mobile and desktop screens.`,
-    technologies: ['Web Frontend', 'Python', 'Vercel', 'JavaScript'],
-    notes: 'Demonstration project. Does not offer real financial transactions, authenticated banking services, or regulatory compliance.',
-    links: [
-      {
-        label: 'Live Demo',
-        url: 'https://novabank-nu.vercel.app',
-        type: 'live',
-        ariaLabel: 'NovaBank live demonstration on Vercel, opens in a new tab',
-      },
-      {
-        label: 'Source Code',
-        url: 'https://github.com/priyansh019/NovaBank',
-        type: 'repo',
-        ariaLabel: 'NovaBank repository on GitHub, opens in a new tab',
-      },
-    ],
-  },
-  {
     id: 'workforce-iq',
-    title: 'WorkForce IQ',
-    subtitle: 'Intelligent Workforce Management Repository',
-    category: 'AI & Automation',
+    number: '03 / 05',
+    year: '2026',
+    gemstoneColor: '#10b981', // Emerald crystal
+    title: 'WORKFORCE IQ',
+    subtitle: 'Intelligent Workforce Operations & Resource Allocation',
+    category: 'AI & AUTOMATION',
     categories: ['AI & Automation'],
     status: 'in-progress',
     statusLabel: 'In Progress',
-    description: 'Description being updated. See the repository for current details.',
+    description: 'Active project repository exploring intelligent team scheduling, bandwidth optimization, and automated role matching.',
     fullOverview: `WorkForce IQ is an in-progress project repository exploring algorithmic workforce scheduling, team bandwidth allocation, and intelligent operations management.
 
 Active Development Status:
 • Repository registered on GitHub under priyansh019/WorkForceIQ.
 • Codebase architecture and feature modules are currently in active iterative development.
 • Please visit the repository for the latest commit logs, issue tracker, and implementation milestones.`,
-    technologies: ['Git', 'Python / Web'],
+    roleSummary: 'Lead engineer architecting backend models for team bandwidth allocation, skill matrix scoring, and automated task dispatching.',
+    technicalConstraints: 'Constraint-satisfaction modeling across heterogeneous developer schedules, meeting windows, and timezone distributions.',
+    technologies: ['Python', 'TypeScript', 'Git', 'Optimization Algorithms'],
     needsVerification: true,
     links: [
       {
@@ -204,62 +196,13 @@ Active Development Status:
     ],
   },
   {
-    id: 'placement-report',
-    title: 'Placement Report',
-    subtitle: 'Institutional Placement Analytics Repository',
-    category: 'Web Applications',
-    categories: ['Web Applications'],
-    status: 'in-progress',
-    statusLabel: 'In Progress',
-    description: 'Description being updated. See the repository for current details.',
-    fullOverview: `Placement Report is an in-progress project examining college campus placement metrics, company visit logs, recruitment statistics, and analytical report generation.
-
-Active Development Status:
-• Codebase hosted on GitHub at priyansh019/Placement_Report.
-• Focuses on data organization, cohort categorization, and student placement data insights.
-• Refer to the source repository for current branches, schema definitions, and upcoming release notes.`,
-    technologies: ['Git', 'Data / Web'],
-    needsVerification: true,
-    links: [
-      {
-        label: 'Source Code',
-        url: 'https://github.com/priyansh019/Placement_Report',
-        type: 'repo',
-        ariaLabel: 'Placement Report repository on GitHub, opens in a new tab',
-      },
-    ],
-  },
-  {
-    id: 'impact-link',
-    title: 'Impact Link',
-    subtitle: 'Collaboration & Student Impact Network Repository',
-    category: 'Web Applications',
-    categories: ['Web Applications'],
-    status: 'in-progress',
-    statusLabel: 'In Progress',
-    description: 'Description being updated. See the repository for current details.',
-    fullOverview: `Impact Link is an open project repository exploring collaborative student initiatives, peer project matching, and measurable community impact tracking.
-
-Active Development Status:
-• Repository hosted at priyansh019/ImpactLink.
-• Currently under active planning and prototype construction.
-• Inspect the GitHub repository for architecture discussions, dependencies, and code commits.`,
-    technologies: ['Git', 'Web Application'],
-    needsVerification: true,
-    links: [
-      {
-        label: 'Source Code',
-        url: 'https://github.com/priyansh019/ImpactLink',
-        type: 'repo',
-        ariaLabel: 'ImpactLink repository on GitHub, opens in a new tab',
-      },
-    ],
-  },
-  {
     id: 'novavoice-calendar-bridge',
-    title: 'NovaVoice Calendar Bridge',
+    number: '04 / 05',
+    year: '2025',
+    gemstoneColor: '#f59e0b', // Amber crystal
+    title: 'NOVAVOICE BRIDGE',
     subtitle: 'Local Flask REST API for Google Calendar Integration',
-    category: 'APIs & Systems',
+    category: 'APIS & SYSTEMS',
     categories: ['APIs & Systems'],
     status: 'local-prototype',
     statusLabel: 'Local Prototype',
@@ -271,6 +214,8 @@ Key Technical Endpoints & Logic:
 • GET /api/health: JSON service status and Google Calendar OAuth token validity verification.
 • POST /api/check_availability: Query calendar time windows against requested participant availability without conflict overlaps.
 • POST /api/book_meeting: Creates formatted Google Calendar event objects with summary, description, attendees, and ISO-8601 timestamps.`,
+    roleSummary: 'Developed the local REST API server, OAuth token handshake, and meeting collision-detection algorithm.',
+    technicalConstraints: 'ISO-8601 timezone normalizations across cross-border event bookings, token refresh handling without process termination.',
     technologies: ['Python', 'Flask', 'Google Calendar API', 'REST API'],
     endpoints: [
       'GET /',
@@ -284,9 +229,12 @@ Key Technical Endpoints & Logic:
   },
   {
     id: 'leetcode-solutions',
-    title: 'LeetCode Solutions',
+    number: '05 / 05',
+    year: '2024 – PRESENT',
+    gemstoneColor: '#ec4899', // Ruby crystal
+    title: 'LEETCODE DSA',
     subtitle: 'C++ Algorithmic Practice & Data Structure Implementations',
-    category: 'Experiments & Practice',
+    category: 'EXPERIMENTS & PRACTICE',
     categories: ['Experiments & Practice'],
     status: 'practice',
     statusLabel: 'Ongoing Practice',
@@ -298,6 +246,8 @@ Key Focus Areas:
 • Algorithmic Paradigms: Two Pointers, Sliding Window, Binary Search, Breadth/Depth First Search, and Dynamic Programming.
 • Optimization: Emphasizing optimal time complexity (O(N), O(N log N)) and minimal auxiliary space memory footprints.
 • Profile: Actively maintained alongside my public LeetCode profile at leetcode.com/u/priyxnsh19/.`,
+    roleSummary: 'Continuous competitive programming in C++ focusing on time-critical asymptotic complexity and clean standard template library implementations.',
+    technicalConstraints: 'Strict bounds checking, cache locality optimizations, and zero-allocation memory constraints on heavy graph operations.',
     technologies: ['C++', 'Data Structures', 'Algorithms', 'STL'],
     links: [
       {
@@ -314,19 +264,6 @@ Key Focus Areas:
       },
     ],
   },
-  {
-    id: 'sat-sa-soc',
-    title: 'SAT-SA / SOC Assessment Analytics',
-    subtitle: 'Security Analytics Exploration',
-    category: 'Cybersecurity',
-    categories: ['Cybersecurity'],
-    status: 'concept',
-    statusLabel: 'Exploration',
-    description: 'Supervisory analytics research for Security Operations Center (SOC) maturity and automated incident response evaluation.',
-    technologies: ['Cybersecurity', 'Analytics'],
-    visibility: 'hidden',
-    links: [],
-  },
 ];
 
 export const CONCEPT_IDEAS = [
@@ -341,12 +278,39 @@ export const CONCEPT_IDEAS = [
 
 export const EXPERIENCE_ITEMS: ExperienceItem[] = [
   {
+    id: 'phoenix-society',
+    role: 'Event Organizer & Technical Coordinator',
+    organization: 'Phoenix Technical Society (AKGEC)',
+    period: 'Active Member (2024 – Present)',
+    location: 'AKGEC, Ghaziabad',
+    description: 'Part of the Phoenix technical society at college, helping organise flagship technical events like RoboVerse, which saw enthusiastic participation from over 200+ students.',
+    tag: 'Technical Society',
+  },
+  {
+    id: 'ai-skill-house',
+    role: 'Initiative Member',
+    organization: 'AI Skill House (IICT × MIB × Google × YouTube)',
+    period: '2025 – 2026',
+    location: 'India / Collaborative',
+    description: 'Part of AI Skill House, a high-impact national skilling initiative in partnership with IICT, Ministry of Information & Broadcasting (MIB), Google, and YouTube, advancing responsible AI and modern developer workflows.',
+    tag: 'Google × MIB Initiative',
+  },
+  {
+    id: 'gdg-code-community',
+    role: 'Hackathon Participant',
+    organization: 'GDG Code for Community 2.0',
+    period: '2025',
+    location: 'Google Developer Groups',
+    description: 'Active participant in GDG Code for Community 2.0 hackathon, collaborating on community-driven software solutions and engaging with developers across the regional tech ecosystem.',
+    tag: 'Google Developer Groups',
+  },
+  {
     id: 'gssoc-2026',
-    role: 'Contributor / Mentee',
+    role: 'Open Source Contributor',
     organization: 'GirlScript Summer of Code 2026',
     period: 'Accepted (2026)',
     location: 'Open Source / Remote',
-    description: 'Accepted as a contributor and mentee to collaborate on open-source repositories, submit pull requests, and contribute to developer tooling.',
+    description: 'Contributor in GSSoC 2026, collaborating on open-source software repositories, resolving issues, and contributing to community tooling.',
     tag: 'Open Source',
   },
   {
@@ -366,24 +330,6 @@ export const EXPERIENCE_ITEMS: ExperienceItem[] = [
     location: 'Ghaziabad, India',
     description: 'Handled event photography, media documentation, and visual storytelling for campus technical and cultural gatherings.',
     tag: 'Media & Creative',
-  },
-  {
-    id: 'phoenix-society',
-    role: 'ECE-Domain Coordination',
-    organization: 'Phoenix Technical Society',
-    period: 'Undergraduate Activity',
-    location: 'AKGEC, Ghaziabad',
-    description: 'Assisted in technical event management, student workshops, and hardware/software problem-solving sessions within the Electronics & Communication Engineering domain.',
-    tag: 'Technical Society',
-  },
-  {
-    id: 'roboverse-event',
-    role: 'Event Organizer & Coordination',
-    organization: 'RoboVerse',
-    period: 'College Event Organization',
-    location: 'AKGEC, Ghaziabad',
-    description: 'Organized and coordinated RoboVerse, an IoT-themed technical event involving over 200 participating students exploring embedded systems and robotics concepts.',
-    tag: 'Event Leadership',
   },
 ];
 
@@ -424,29 +370,28 @@ export const CERTIFICATIONS: CertificationItem[] = [
 export const SKILL_CATEGORIES: SkillCategory[] = [
   {
     title: 'Programming Languages',
-    description: 'Core languages used in coursework, practice, and software projects',
+    description: 'Core languages used in coursework, practice, and software systems',
     skills: [
       { name: 'C++', level: 'Core Practice', context: 'LeetCode & algorithm implementations' },
-      { name: 'Python', level: 'Basic / Applied', context: 'SentinelPy scanner & NovaVoice API' },
+      { name: 'Python', level: 'Applied', context: 'SentinelPy scanner & NovaVoice API' },
       { name: 'TypeScript', level: 'Applied', context: 'ClockWork AI web application' },
       { name: 'JavaScript', level: 'Learning', context: 'Interactive DOM & frontend logic' },
       { name: 'C', level: 'Basic', context: 'ECE coursework fundamentals' },
     ],
   },
   {
-    title: 'Web & Backend Frameworks',
-    description: 'Full-stack libraries and server frameworks for API delivery',
+    title: 'Web & Systems Frameworks',
+    description: 'Full-stack libraries, 3D WebGL, and API frameworks',
     skills: [
-      { name: 'React', level: 'Applied', context: 'SentinelPy & UI dashboards' },
-      { name: 'Vite', level: 'Applied', context: 'Modern frontend tooling' },
+      { name: 'Three.js / WebGL', level: 'Applied', context: '3D interactive spatial portfolios' },
+      { name: 'React & Vite', level: 'Applied', context: 'Fast modern frontend interfaces' },
       { name: 'FastAPI', level: 'Applied', context: 'SentinelPy RESTful backend' },
       { name: 'Flask', level: 'Applied', context: 'NovaVoice Calendar Bridge' },
-      { name: 'MySQL', level: 'Learning', context: 'Relational database schema design' },
-      { name: 'Tailwind CSS', level: 'Applied', context: 'Responsive styling' },
+      { name: 'Tailwind CSS', level: 'Applied', context: 'Responsive layout systems' },
     ],
   },
   {
-    title: 'Security & Networking',
+    title: 'Cybersecurity & Networks',
     description: 'Security fundamentals, authorized network reconnaissance, and protocol inspection',
     skills: [
       { name: 'Cybersecurity Fundamentals', level: 'Certified', context: 'Certified & CTF participation' },
@@ -456,29 +401,22 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
     ],
   },
   {
-    title: 'AI & Data Integration',
-    description: 'Prompt engineering, LLM interfaces, and responsible AI practices',
+    title: 'AI, IoT & Electronics',
+    description: 'AI skilling, prompt engineering, and ECE hardware projects',
     skills: [
+      { name: 'AI Skill House', level: 'Initiative', context: 'IICT × MIB × Google × YouTube' },
       { name: 'Prompt Engineering', level: 'Certified (Google)', context: 'Google Prompting Essentials' },
-      { name: 'Multimodal Prompting', level: 'Practiced', context: 'Top skill on LinkedIn' },
-      { name: 'Responsible AI', level: 'Studied', context: 'Ethical deployment principles' },
       { name: 'Gemini API Integration', level: 'Applied', context: 'ClockWork everyday task bot' },
-    ],
-  },
-  {
-    title: 'Embedded Systems & Hardware',
-    description: 'Electronics and Communication Engineering coursework and lab focus',
-    skills: [
-      { name: 'ECE Coursework Focus', level: 'Academic', context: 'Circuits, signals, digital systems' },
+      { name: 'ECE & IoT Projects', level: 'Hands-on', context: 'Microcontrollers & sensor circuits' },
     ],
   },
   {
     title: 'Tools & Platforms',
-    description: 'Version control, developer tooling, and cloud deployment targets',
+    description: 'Version control, developer tooling, and deployment targets',
     skills: [
       { name: 'Git & GitHub', level: 'Daily Tool', context: 'Version control & collaboration' },
       { name: 'Render', level: 'Deployment', context: 'SentinelPy web & API hosting' },
-      { name: 'Vercel', level: 'Deployment', context: 'ClockWork & NovaBank deployment' },
+      { name: 'Vercel', level: 'Deployment', context: 'ClockWork web deployment' },
       { name: 'VS Code', level: 'Editor', context: 'Development environment' },
     ],
   },

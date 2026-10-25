@@ -1,139 +1,117 @@
-import React from 'react';
-import { motion } from 'motion/react';
-import { useTheme } from './hooks/useTheme.ts';
-import { useActiveSection } from './hooks/useActiveSection.ts';
-import { Navbar } from './components/navigation/Navbar.tsx';
-import { Hero } from './components/hero/Hero.tsx';
-import { ProjectsSection } from './components/projects/ProjectsSection.tsx';
-import { Skills3DWeb } from './components/network/Skills3DWeb.tsx';
-import { AboutSection } from './components/about/AboutSection.tsx';
-import { SkillsSection } from './components/skills/SkillsSection.tsx';
-import { ExperienceSection } from './components/experience/ExperienceSection.tsx';
-import { CertificationsSection } from './components/certifications/CertificationsSection.tsx';
-import { ContactSection } from './components/contact/ContactSection.tsx';
-import { Footer } from './components/footer/Footer.tsx';
-import { ScrollProgress } from './components/ui/ScrollProgress.tsx';
-
-const SECTION_IDS = [
-  'hero',
-  'projects',
-  'constellation',
-  'about',
-  'skills',
-  'experience',
-  'certifications',
-  'contact',
-];
+import React, { useState, useEffect } from 'react';
+import { BackgroundVideo } from './components/BackgroundVideo.tsx';
+import { MainframeNavbar } from './components/MainframeNavbar.tsx';
+import { MainframeHero } from './components/MainframeHero.tsx';
+import { AboutSection } from './components/AboutSection.tsx';
+import { ProjectsSection } from './components/ProjectsSection.tsx';
+import { SkillsSection } from './components/SkillsSection.tsx';
+import { TimelineSection } from './components/TimelineSection.tsx';
+import { CredentialsSection } from './components/CredentialsSection.tsx';
+import { ContactSection } from './components/ContactSection.tsx';
+import { MainframeModal } from './components/MainframeModal.tsx';
 
 export default function App() {
-  const { theme, toggleTheme } = useTheme();
-  const activeSection = useActiveSection(SECTION_IDS, 0.25);
+  const [activeSection, setActiveSection] = useState<string>('hero');
+  const [modalState, setModalState] = useState<{
+    isOpen: boolean;
+    tab: string;
+    title: string;
+    subtitle?: string;
+  }>({
+    isOpen: false,
+    tab: 'about',
+    title: '',
+    subtitle: '',
+  });
+
+  // Track active section on scroll: sequence starts with About, then Projects, etc.
+  useEffect(() => {
+    const sectionIds = ['hero', 'about', 'projects', 'skills', 'timeline', 'credentials', 'contact'];
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY + window.innerHeight * 0.35;
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sectionIds[i]);
+        if (el) {
+          const top = el.offsetTop;
+          if (scrollPosition >= top) {
+            setActiveSection(sectionIds[i]);
+            break;
+          }
+        }
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const handleNavigate = (sectionId: string) => {
+    const el = document.getElementById(sectionId);
+    if (el) {
+      const yOffset = -75; // Account for fixed navbar height
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  };
+
+  const handleOpenModal = (tab: string, title?: string, subtitle?: string) => {
+    setModalState({
+      isOpen: true,
+      tab: tab || 'about',
+      title: title || '',
+      subtitle: subtitle || '',
+    });
+  };
+
+  const handleCloseModal = () => {
+    setModalState((prev) => ({ ...prev, isOpen: false }));
+  };
 
   return (
-    <div className="min-h-screen bg-[#fbfbfa] dark:bg-[#080b11] text-slate-800 dark:text-slate-100 selection:bg-cyan-500/20 selection:text-cyan-700 dark:selection:bg-cyan-400/20 dark:selection:text-cyan-300 transition-colors duration-300 flex flex-col">
-      {/* Scroll Progress Bar */}
-      <ScrollProgress />
+    <div className="relative w-full min-h-screen bg-[#051F20] text-[#DAF1DE] selection:bg-[#DAF1DE] selection:text-[#051F20]">
+      {/* Background Video with horizontal mouse scrub controller & scroll-depth scrim */}
+      <BackgroundVideo />
 
-      {/* Sticky Navigation Header with Prominent Light/Dark Mode Switcher */}
-      <Navbar
-        theme={theme}
-        onToggleTheme={toggleTheme}
+      {/* Mainframe Fixed Navbar with section tracking */}
+      <MainframeNavbar
         activeSection={activeSection}
+        onNavigate={handleNavigate}
+        onOpenModal={handleOpenModal}
       />
 
-      {/* Main Content Area with Smooth Motion Transitions */}
-      <main id="main-content" className="flex-1">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, ease: 'easeOut' }}
-        >
-          <Hero theme={theme} />
-        </motion.div>
+      {/* Main Scrollable Content Structure: Ordered with About First */}
+      <main className="relative z-10 w-full">
+        {/* 0. Hero Section */}
+        <MainframeHero onNavigate={handleNavigate} />
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-80px' }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
-          <ProjectsSection />
-        </motion.div>
+        {/* 1. About Priyansh Section (Introduces Person First) */}
+        <AboutSection />
 
-        {/* 3D Interactive Web of Skills and Projects */}
-        <section id="constellation" className="py-16 md:py-24 relative">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: '-60px' }}
-              transition={{ duration: 0.6, ease: 'easeOut' }}
-            >
-              <div className="mb-8">
-                <p className="text-xs font-mono uppercase tracking-wider text-cyan-600 dark:text-cyan-400 mb-2">
-                  System Architecture Graph
-                </p>
-                <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 dark:text-white mb-3">
-                  3D Skills & Projects Constellation
-                </h2>
-                <p className="text-base text-slate-600 dark:text-slate-300 max-w-2xl">
-                  An interactive 3D spatial network visualizing the direct connections between technical competencies and real project implementations. Rotate, hover, and trace the architecture.
-                </p>
-              </div>
+        {/* 2. Featured Projects Section (Dynamic color changes + click to open details) */}
+        <ProjectsSection />
 
-              <Skills3DWeb theme={theme} />
-            </motion.div>
-          </div>
-        </section>
+        {/* 3. Technical Skills Section */}
+        <SkillsSection />
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
-          <AboutSection />
-        </motion.div>
+        {/* 4. Leadership & Timeline (Phoenix Technical Society RoboVerse 200+) */}
+        <TimelineSection />
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
-          <SkillsSection />
-        </motion.div>
+        {/* 5. Credentials & Honors (Credly verified badges) */}
+        <CredentialsSection />
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
-          <ExperienceSection />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
-          <CertificationsSection />
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.6, ease: 'easeOut' }}
-        >
-          <ContactSection />
-        </motion.div>
+        {/* 6. Contact & Footer Section */}
+        <ContactSection onScrollToTop={() => handleNavigate('hero')} />
       </main>
 
-      {/* Footer */}
-      <Footer />
+      {/* Interactive Detail Modal / Drawer */}
+      <MainframeModal
+        isOpen={modalState.isOpen}
+        onClose={handleCloseModal}
+        activeTab={modalState.tab}
+        title={modalState.title}
+        subtitle={modalState.subtitle}
+      />
     </div>
   );
 }

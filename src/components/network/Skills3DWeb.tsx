@@ -54,7 +54,7 @@ export const Skills3DWeb: React.FC<Skills3DWebProps> = ({ theme, onSelectProject
         x: 0,
         y: 0,
         z: 0,
-        connections: ['sentinelpy', 'clockwork', 'novabank', 'novavoice', 'leetcode'],
+        connections: ['sentinelpy', 'clockwork', 'novavoice', 'leetcode'],
         detail: 'B.Tech ECE · Full-Stack & Cybersecurity',
       },
 
@@ -84,19 +84,6 @@ export const Skills3DWeb: React.FC<Skills3DWebProps> = ({ theme, onSelectProject
         connections: ['typescript', 'gemini', 'react', 'vercel', 'core'],
         projectRef: 'ClockWork',
         detail: 'AI-Powered Everyday Tasks with Gemini API',
-      },
-      {
-        id: 'novabank',
-        name: 'NovaBank',
-        category: 'project',
-        color: '#38bdf8',
-        radius: 10,
-        x: 90,
-        y: 110,
-        z: -70,
-        connections: ['python', 'react', 'vercel', 'core'],
-        projectRef: 'NovaBank',
-        detail: 'Private Banking UI & Financial Ledger Concept',
       },
       {
         id: 'novavoice',
@@ -135,7 +122,7 @@ export const Skills3DWeb: React.FC<Skills3DWebProps> = ({ theme, onSelectProject
         x: -190,
         y: 20,
         z: 10,
-        connections: ['sentinelpy', 'novavoice', 'novabank'],
+        connections: ['sentinelpy', 'novavoice'],
         detail: 'Async sockets, scanning engine, and REST APIs',
       },
       {
@@ -159,7 +146,7 @@ export const Skills3DWeb: React.FC<Skills3DWebProps> = ({ theme, onSelectProject
         x: 10,
         y: 40,
         z: 130,
-        connections: ['sentinelpy', 'clockwork', 'novabank'],
+        connections: ['sentinelpy', 'clockwork'],
         detail: 'Responsive frontend UI dashboards & states',
       },
       {
@@ -255,7 +242,7 @@ export const Skills3DWeb: React.FC<Skills3DWebProps> = ({ theme, onSelectProject
         x: 160,
         y: 60,
         z: -40,
-        connections: ['clockwork', 'novabank'],
+        connections: ['clockwork'],
         detail: 'Edge deployment for fast worldwide delivery',
       },
       {

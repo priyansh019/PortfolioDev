@@ -1,0 +1,891 @@
+# MASTER BUILD PROMPT — IMMERSIVE 3D DEVELOPER PORTFOLIO
+
+You are a senior creative developer, Three.js specialist, UI/UX designer, motion designer, and software architect.
+
+Your task is to build a complete, production-quality, immersive 3D personal portfolio website for **Priyansh Singh**, inspired by the interaction design, visual atmosphere, and scroll-driven 3D storytelling of:
+
+Reference website: https://about.senbuzy.com/
+
+Reference open-source project: https://github.com/dayinji/sen-3d-resume/tree/main
+
+The result should capture the same general experience: a cinematic 3D character, elegant editorial typography, scrolling that moves the camera through a 3D scene, résumé sections that feel integrated into the environment, and a carefully designed projects gallery.
+
+Do not merely create a static landing page with a 3D object behind it. Build a functioning interactive portfolio.
+
+Create an original implementation with my own identity, content, visual treatment, 3D avatar, and projects. Do not reuse the reference creator's personal identity, photographs, private assets, résumé content, branding, or social links.
+
+## 1. Primary objective
+
+Create a fully responsive portfolio that presents me as an ECE undergraduate, developer, technology enthusiast, IoT and robotics builder, cybersecurity learner, and aspiring software engineer.
+
+The website should feel like a premium digital experience rather than a conventional student portfolio.
+
+The first impression should be cinematic, distinctive, polished, and memorable.
+
+The site must communicate both creativity and technical ability. It should work as a professional portfolio for internships, open-source contributions, hackathons, recruiters, and future software engineering opportunities.
+
+The website must be fully functional, not a collection of placeholder screens.
+
+## 2. Required technology stack
+
+Use the following stack unless a specific technical limitation requires an equivalent:
+
+- React 18 or a compatible stable React release.
+- TypeScript with strict type checking.
+- Vite for development and production builds.
+- Three.js for the 3D engine.
+- @react-three/fiber for the React-based 3D canvas.
+- @react-three/drei for model loading, camera helpers, environment lighting, and controls.
+- @react-three/postprocessing and postprocessing for visual effects.
+- Framer Motion for HTML interface animations.
+- GSAP with ScrollTrigger if useful for precise scroll-driven animation.
+- Zustand for shared interaction state if necessary.
+- Tailwind CSS or well-structured modular CSS for styling.
+- Lucide React for interface icons.
+- React Markdown or a similarly lightweight solution if project detail pages use Markdown.
+
+Avoid unnecessary dependencies. Keep the application lightweight, maintainable, and easy for an AI coding agent to modify.
+
+No backend or database is required for the initial version.
+
+Use a static, deployable frontend. External APIs must not be required for the main portfolio to render.
+
+## 3. Reference inspection and implementation strategy
+
+Before coding, inspect the reference website and the reference repository's README, source code, assets, and project instructions when accessible.
+
+Understand the relationship between:
+- The fixed full-screen 3D canvas.
+- The HTML content that scrolls above it.
+- The character model and camera animation.
+- Camera focus points aligned with résumé entries.
+- The projects gallery and project-detail interface.
+- The loading screen and post-processing effects.
+- Cursor-based interactions and responsive behaviour.
+
+Use the reference repository to understand the architecture, not as an excuse to skip implementation.
+
+If repository access is available, inspect the original project and determine which technical approaches are worth adapting.
+
+If access to the original live website or its assets is unavailable, continue using the specification below. Do not stop and wait for me.
+
+Do not blindly copy the original repository into a new project. If adapting code, respect its MIT license and notices, and replace all personal assets and content. Implement an original experience that preserves the design goals.
+
+## 4. Visual direction
+
+Build a cinematic, minimalist, premium 3D portfolio.
+
+The visual language should combine:
+- Editorial design.
+- Modern creative developer portfolios.
+- Cinematic 3D rendering.
+- Carefully restrained futuristic elements.
+- Subtle film grain.
+- Elegant typography.
+- Spacious layouts.
+- Atmospheric lighting.
+- Smooth camera movement.
+- Refined motion design.
+
+Use a restrained palette:
+- Warm off-white.
+- Graphite and near-black.
+- Muted grey.
+- Soft silver.
+- A subtle cool blue or violet accent, used sparingly.
+
+The design should not look like a generic SaaS dashboard, a gaming website, a neon cyberpunk template, or a typical AI-generated portfolio.
+
+Avoid excessive gradients, bright neon, unnecessary glass cards, giant rounded rectangles, random floating particles, excessive shadows, and meaningless decorative animations.
+
+Use high-quality typography. Prefer a combination of a refined display serif or editorial font for selected headings and a clean sans-serif for body text and navigation. Load fonts locally when practical and provide system-font fallbacks.
+
+Use strong visual hierarchy, deliberate whitespace, fine separators, understated labels, and precise alignment.
+
+Make the design beautiful in both light and dark themes.
+
+## 5. Core 3D experience
+
+This is the most important requirement.
+
+Create a full-viewport Three.js canvas fixed behind the scrolling HTML content.
+
+The 3D scene should contain a stylized 3D human avatar representing me, positioned within an atmospheric studio-like environment.
+
+The avatar should be visually sophisticated and naturally integrated with the composition. It should not look like an emoji, a flat illustration, a primitive mannequin, or an unrelated stock character.
+
+Use a custom GLB/GLTF model whenever available.
+
+My intended avatar specifications:
+- Stylized 3D human character.
+- Neutral A-pose or a compatible rigged pose.
+- Designed for professional portfolio use.
+- Proportions and appearance based on my reference photographs if supplied.
+- Clean materials, detailed clothing, natural lighting, and polished rendering.
+- Appropriate placement for the camera composition.
+- No exaggerated cartoon proportions unless deliberately used for a subtle stylized aesthetic.
+
+Model loading must be configurable.
+
+Use the model path:
+
+public/models/me.glb
+
+Also provide an environment texture at:
+
+public/textures/env.hdr
+
+However, do not assume these files exist. Inspect the project first.
+
+If the custom model is missing, implement a graceful, visually intentional fallback that allows the website to work while clearly documenting where to place the real model. Do not leave the entire website blank or stuck behind a loading screen.
+
+Do not rely on a missing remote model URL. If a suitable bundled model is unavailable, use a locally constructed Three.js placeholder scene as a temporary fallback, with clear instructions for replacing it.
+
+Keep model loading, environment setup, scene lighting, camera control, and visual effects separated into maintainable modules.
+
+### 3D camera movement
+
+Scrolling through the portfolio must drive the camera through a coordinated sequence of cinematic views.
+
+The experience should resemble a continuous camera journey rather than a series of unrelated animations.
+
+Implement:
+- A starting hero camera composition.
+- Smooth interpolation between camera positions and orientations.
+- A camera focus target associated with each résumé entry.
+- A transition into the projects gallery.
+- A final composition that feels intentional.
+- Scroll progress synchronization.
+- Stable behaviour when scrolling quickly in either direction.
+- Correct handling of scroll progress on desktop and mobile.
+
+Prefer a baked camera animation inside the GLB model when the correct animated asset exists.
+
+If the model does not contain a usable camera animation, implement a robust alternative using authored camera keyframes, camera position targets, and focus targets.
+
+Do not make the application depend exclusively on an animation clip that may be missing.
+
+If using baked animation, support the required camera animation clip and named focus anchors when present. Validate the GLB structure instead of assuming every node exists.
+
+The camera should remain smooth, predictable, and synchronized with the content.
+
+Do not allow the character to disappear off-screen unexpectedly during scroll transitions.
+
+### 3D visual effects
+
+Use effects carefully and optimize for performance:
+- Depth of field.
+- Subtle bloom.
+- Soft ambient lighting.
+- Image-based lighting when available.
+- Film grain or noise.
+- Smooth exposure and tonal balance.
+- Optional vignette.
+- Subtle focus transitions.
+
+Keep effects adjustable through documented configuration values.
+
+Provide sensible quality settings and disable or reduce expensive effects on weaker devices.
+
+### Eye and cursor interaction
+
+If the model has identifiable eyes, implement subtle eye tracking toward the cursor.
+
+Requirements:
+- Smooth interpolation rather than abrupt snapping.
+- Limited rotational range.
+- No unnatural eye rotation.
+- Safe fallback if eye meshes or bones are missing.
+- Reduced-motion and touch-device handling.
+
+Do not let cursor interaction interfere with scroll-driven camera animation.
+
+### Loading screen
+
+Implement a refined loading experience.
+
+Show:
+- A minimal wordmark or monogram.
+- A loading indicator or progress treatment.
+- A short introductory line.
+- Smooth transition into the completed scene.
+
+Use real asset-loading progress when available.
+
+Never wait indefinitely for an asset that failed to load. Add error handling, a timeout-safe fallback strategy, and a way for the site to remain usable without the model or environment texture.
+
+Respect prefers-reduced-motion.
+
+## 6. Hero section
+
+The hero should immediately establish my identity.
+
+Use an editorial composition with the 3D character as the visual centerpiece and HTML content carefully positioned around it.
+
+Include:
+
+Small introductory label:
+"ECE STUDENT · DEVELOPER · BUILDER"
+
+Primary name:
+"Priyansh Singh"
+
+A concise headline:
+"Building at the intersection of software, electronics, and intelligent systems."
+
+Supporting text:
+"I'm an Electronics and Communication Engineering student exploring software engineering, IoT, robotics, cybersecurity, and AI-powered products. I enjoy turning ideas into practical projects and learning by building."
+
+Primary action:
+"Explore my work"
+
+Secondary action:
+"View résumé"
+
+Include a subtle scroll indicator and a small location label:
+"India"
+
+Include relevant social links:
+- GitHub: https://github.com/priyansh019
+- LinkedIn: use a configurable URL; do not invent a profile URL.
+- Email: use a configurable address; do not invent one.
+
+Use smooth entrance animations for the name, headline, and actions.
+
+Make the content legible against the 3D scene. Use responsive positioning rather than fixed desktop coordinates.
+
+The hero must remain visually strong even if WebGL is unavailable.
+
+## 7. About section
+
+Create an About section that appears as a natural continuation of the hero.
+
+Heading:
+"A little about me."
+
+Content:
+
+"I'm an Electronics and Communication Engineering undergraduate at Ajay Kumar Garg Engineering College, affiliated with AKTU.
+
+My interests span software development, embedded systems, IoT, robotics, cybersecurity, and artificial intelligence. I like experimenting with technologies, building prototypes, participating in technical communities, and learning by solving real problems.
+
+I'm still growing as an engineer, and I value understanding how things work instead of treating tools as black boxes. Every project is an opportunity to improve my problem-solving, engineering fundamentals, and ability to turn ideas into working systems."
+
+Add compact metadata:
+- Education: B.Tech, Electronics and Communication Engineering.
+- Institution: Ajay Kumar Garg Engineering College.
+- Affiliation: Dr. A.P.J. Abdul Kalam Technical University.
+- Interests: Software engineering, IoT, robotics, AI, cybersecurity.
+- Current focus: Building projects, improving development skills, and contributing to open source.
+
+Do not invent graduation dates, CGPA, professional employment, or qualifications.
+
+Present the section using a clean editorial layout with short paragraphs, carefully spaced metadata, and a subtle relationship to the 3D scene.
+
+## 8. Skills section
+
+Build a visually refined skills section without exaggerated proficiency claims.
+
+Organize skills into categories.
+
+### Programming
+- C
+- C++
+- Python
+- JavaScript and TypeScript, where applicable to actual work
+
+### Web development
+- HTML
+- CSS
+- React
+- Vite
+- Git and GitHub
+- Node.js fundamentals
+
+### Data and databases
+- NumPy
+- Pandas
+- Matplotlib
+- MySQL fundamentals
+
+### Electronics, IoT and robotics
+- Arduino
+- ESP32
+- Motor drivers
+- Sensors and embedded-system fundamentals
+- Line-following robot development
+
+### Cybersecurity and tools
+- Linux and command-line fundamentals where demonstrated.
+- Network security concepts.
+- Vulnerability scanning concepts.
+- Development and debugging tools.
+
+Treat this as an editable starting list. Do not imply expert-level mastery of every item.
+
+Represent skill maturity with simple labels such as "Learning", "Working knowledge", and "Project experience", configurable in one data file.
+
+Do not use fake circular percentages, invented skill scores, or animated proficiency bars.
+
+Use restrained typography, subtle hover effects, and compact category groupings.
+
+## 9. Experience, leadership and community
+
+Create a résumé timeline integrated with the 3D camera movement.
+
+Use a data-driven structure. Each timeline entry should have a title, organization, date, description, relevant links, and a corresponding 3D camera focus target.
+
+Include the following known experiences where appropriate:
+
+### Phoenix Technical Society
+Role: ECE-domain coordinator or technical society coordinator.
+
+Description: Contributed to technical event organization, including RoboVerse, an event focused on robotics, IoT, and related technologies that brought together more than 200 students.
+
+Do not inflate the role into a formal employment position.
+
+### GirlScript Summer of Code 2026
+Role: Contributor / mentee, as applicable to the official programme listing.
+
+Description: Open-source participation and collaboration.
+
+### Technical communities and events
+- Participant in CyberGeek CTF 2026 at Geekhaven, IIIT Allahabad, with team ByteCrew.
+- Participant in GDG Code for Community 2.0.
+- Participant in AI Skill House associated with IICT × MIB × Google × YouTube.
+
+Treat all participation claims as configurable and verify details before publication.
+
+Do not invent awards, rankings, placements, official certificates, employment, or project outcomes.
+
+Every entry must be editable through a single structured data file.
+
+Keep the timeline visually elegant. Use fine lines, small metadata labels, readable text, and smooth focus transitions.
+
+## 10. Education section
+
+Present education as a dedicated timeline entry or a separate section, depending on the final composition.
+
+Institution:
+Ajay Kumar Garg Engineering College.
+
+Degree:
+Bachelor of Technology in Electronics and Communication Engineering.
+
+Affiliation:
+Dr. A.P.J. Abdul Kalam Technical University.
+
+Use placeholders for dates that have not been verified. Never invent academic scores.
+
+The education entry must integrate correctly with the scroll-driven camera focus system.
+
+## 11. Projects gallery
+
+Create a premium portfolio gallery that presents my real technical projects.
+
+The gallery must have a distinctive layout, high-quality cover images or locally generated visual treatments, concise descriptions, tags, and working actions.
+
+Use configurable project data rather than hardcoding project details into the UI.
+
+Start with these projects, but verify the repositories and content before publication.
+
+### Project A: NetSecure
+Title: Network Vulnerability Scanner + Security Dashboard.
+
+Description:
+"A cybersecurity project focused on making network security checks and vulnerability information easier to explore through a dashboard."
+
+Only list scanning features, detection methods, integrations, and results that are actually implemented.
+
+Repository URL: configurable. Do not invent a repository URL.
+
+### Project B: NovaVoice Calendar Bridge
+Description:
+"A voice-oriented calendar integration project connecting an interface to calendar availability and meeting-booking endpoints."
+
+Known technical context includes a Flask API, Google Calendar integration, and endpoints for checking availability and booking meetings. Verify the current implementation before claiming any feature is production-ready.
+
+Repository URL: configurable.
+
+### Project C: Sign2Voice
+Description:
+"A project exploring a stability-driven streaming pipeline for real-time sign-to-speech translation."
+
+Use the existing project materials if supplied. Do not invent benchmark results, supported sign languages, model accuracy, or deployment capabilities.
+
+Repository URL: configurable.
+
+### Project D: IoT and robotics projects
+Include configurable cards for:
+- Line-following robot.
+- ESP32 and Arduino experiments.
+- Motor-control and sensor-based prototypes.
+
+Do not imply that every experiment is a completed standalone product.
+
+### Project E: Open-source and learning projects
+Provide a flexible category for verified GitHub projects, experiments, and technical work.
+
+Make it easy to add or remove projects through a central data file.
+
+Each card should support:
+- Project title.
+- Short description.
+- Category.
+- Technologies.
+- Cover image.
+- Optional demo link.
+- Optional GitHub link.
+- Featured flag.
+- Optional project detail Markdown.
+- Accessible image alt text.
+
+Do not display empty or broken links.
+
+### Gallery interaction
+
+The projects gallery should feel immersive.
+
+Implement:
+- Responsive project cards.
+- Smooth entrance transitions.
+- Subtle hover interactions.
+- Keyboard-accessible selection.
+- A project-detail modal or full-screen detail view.
+- An obvious close action.
+- Escape-key support.
+- Focus management.
+- Scroll locking when appropriate.
+- Working repository and live-demo actions.
+
+Project details should support:
+- Overview.
+- Problem being solved.
+- Technical approach.
+- Technology stack.
+- My contribution.
+- Challenges and learning.
+- Screenshots or media, if available.
+- Repository and demo links.
+
+Only populate claims supported by actual project information.
+
+The project detail view must work even when a project has no custom Markdown document.
+
+## 12. Achievements and certifications
+
+Create a compact, tasteful section for verified achievements and certifications.
+
+Allow entries for:
+- Open-source contributions.
+- Technical competitions.
+- Hackathons.
+- Community participation.
+- Courses and certifications.
+
+Do not invent certificate names, credential IDs, scores, awards, or rankings.
+
+If an item cannot be verified, keep it out of the public-facing content until I provide confirmation.
+
+Support optional credential links and dates.
+
+## 13. Contact section
+
+End with a memorable contact section that feels like the conclusion of the 3D journey.
+
+Heading:
+"Have something interesting to build?"
+
+Supporting copy:
+"I'm always interested in learning, collaborating, and exploring ideas at the intersection of software and technology."
+
+Include:
+- Email action using a configurable email address.
+- GitHub link.
+- LinkedIn link using a configurable URL.
+- Optional résumé download, enabled only when a real PDF is supplied.
+
+Add a tasteful closing animation and a small footer.
+
+The footer should include:
+- Priyansh Singh.
+- Current year generated dynamically.
+- A minimal "Designed and built with curiosity" message.
+- Relevant social links.
+
+Do not invent contact details.
+
+## 14. Navigation and scroll experience
+
+Build a minimal, elegant navigation system.
+
+Requirements:
+- Small wordmark or monogram.
+- Section navigation.
+- Current-section indicator.
+- Theme toggle.
+- Smooth navigation to sections.
+- Responsive mobile navigation.
+- Correct active-section updates during scrolling.
+- Accessible keyboard controls.
+
+The navigation must not obscure the avatar or important text.
+
+Support both normal wheel scrolling and touch scrolling.
+
+The website should not hijack scrolling in a way that prevents visitors from reading the content.
+
+Use scroll progress to drive the 3D camera and section transitions, while allowing ordinary document scrolling.
+
+Avoid competing scroll systems. Choose one clear source of scroll progress and test it carefully.
+
+## 15. Light and dark themes
+
+Implement a fully working light/dark theme toggle.
+
+Dark theme:
+- Deep graphite background.
+- Soft off-white text.
+- Muted cool accents.
+- Controlled highlights in the 3D scene.
+
+Light theme:
+- Warm off-white background.
+- Dark graphite text.
+- Restrained neutral accents.
+- Bright but soft studio lighting.
+
+The theme must affect:
+- HTML background and text.
+- Navigation.
+- Project cards.
+- Modal surfaces.
+- Separators.
+- Buttons.
+- Metadata.
+- Relevant 3D scene background and lighting.
+
+Preserve text contrast and visual hierarchy in both modes.
+
+Store the selected theme in localStorage and initialize it safely. Respect the user's system preference on first visit if no explicit preference has been saved.
+
+Avoid hydration or initialization flicker.
+
+If changing the scene's lights requires remounting a component, handle it without losing scroll progress or resetting the whole experience unnecessarily.
+
+## 16. Responsive design
+
+The portfolio must work across:
+- Large desktop monitors.
+- Standard laptops.
+- Tablets.
+- Mobile phones.
+
+Desktop:
+- Full cinematic 3D scene.
+- Balanced typography and composition.
+- Smooth camera transitions.
+- Spacious content layout.
+
+Tablet:
+- Adapt camera framing.
+- Reduce content overlap.
+- Adjust section spacing and typography.
+
+Mobile:
+- Prioritize readability and reliable scrolling.
+- Use a simplified 3D composition when necessary.
+- Reduce expensive post-processing.
+- Prevent text from overlapping the model.
+- Provide a usable navigation menu.
+- Keep all project actions accessible.
+- Ensure touch interactions work.
+- Respect device safe areas.
+
+Do not merely shrink the desktop design. Recompose the experience for narrow screens.
+
+If WebGL is unavailable or disabled, display a designed fallback background and keep all content, links, and navigation functional.
+
+## 17. Performance and reliability
+
+Performance is a core requirement.
+
+Implement:
+- Lazy loading of heavy assets.
+- Suspense boundaries where appropriate.
+- Error boundaries around the 3D experience.
+- Graceful GLB and HDR loading failures.
+- Efficient scroll progress updates.
+- Refs and mutable values for animation data where appropriate.
+- Avoidance of unnecessary React re-renders on every scroll event.
+- Proper cleanup of animation frames, observers, and event listeners.
+- Sensible renderer settings.
+- Appropriate device pixel ratio limits.
+- Reduced post-processing on mobile.
+- Compressed images and appropriately sized textures.
+- No unnecessary external scripts.
+- No blocking remote fonts or remote models.
+- No excessive GPU-intensive effects.
+
+Do not recreate the entire Three.js scene on every scroll update.
+
+Do not put expensive synchronous operations in scroll handlers.
+
+Do not let an asset failure prevent the user from reaching the rest of the portfolio.
+
+Add reduced-motion support for users who prefer fewer animations.
+
+Keep the site functional under limited network conditions after the initial page assets have been downloaded.
+
+## 18. Accessibility and usability
+
+Implement:
+- Semantic HTML.
+- Appropriate heading hierarchy.
+- Keyboard-accessible navigation.
+- Visible focus states.
+- Descriptive accessible labels.
+- Accessible project modals.
+- Sufficient text contrast.
+- Meaningful image alt text.
+- Reduced-motion support.
+- Non-colour indicators for interactive states.
+- Clear link labels.
+
+Do not sacrifice accessibility for the visual effect.
+
+All essential information must remain readable and available without interacting with the 3D canvas.
+
+## 19. Recommended architecture
+
+Use a clean project structure similar to:
+
+src/
+  app/
+    App.tsx
+    config.ts
+  components/
+    Navigation.tsx
+    ThemeToggle.tsx
+    LoadingScreen.tsx
+    SectionLabel.tsx
+    ProjectCard.tsx
+    ProjectModal.tsx
+    SocialLinks.tsx
+  scene/
+    PortfolioCanvas.tsx
+    PortfolioScene.tsx
+    AvatarModel.tsx
+    CameraRig.tsx
+    CameraTimeline.ts
+    Environment.tsx
+    PostProcessing.tsx
+    FallbackScene.tsx
+  sections/
+    Hero.tsx
+    About.tsx
+    Skills.tsx
+    Experience.tsx
+    Education.tsx
+    Projects.tsx
+    Achievements.tsx
+    Contact.tsx
+  data/
+    profile.ts
+    skills.ts
+    experience.ts
+    projects.ts
+    achievements.ts
+  hooks/
+    useScrollProgress.ts
+    useReducedMotion.ts
+  styles/
+    global.css
+    variables.css
+  utils/
+    assets.ts
+    motion.ts
+  main.tsx
+
+public/
+  models/
+    me.glb
+  textures/
+    env.hdr
+  images/
+  documents/
+    resume.pdf
+
+You may adapt this structure if another arrangement is more practical, but keep 3D rendering, content data, visual sections, and reusable components separated.
+
+Missing files must be handled gracefully.
+
+Create a central configuration for:
+- Personal details.
+- Social links.
+- Email address.
+- Résumé URL.
+- Theme defaults.
+- Animation preferences.
+- 3D quality settings.
+- Project and experience data.
+
+Do not scatter personal information throughout the source code.
+
+## 20. 3D scroll-camera implementation details
+
+Implement a stable mapping between document scroll progress and camera state.
+
+Use an explicit timeline configuration with:
+- Section identifier.
+- Scroll progress or normalized range.
+- Camera position.
+- Camera target.
+- Optional focal depth.
+- Optional avatar emphasis.
+- Optional lighting adjustments.
+
+The timeline must be configurable.
+
+If a compatible GLB camera animation exists, allow the timeline to synchronize with it. If it does not, use authored camera keyframes.
+
+Use smooth interpolation, such as Catmull-Rom interpolation or carefully tuned damped interpolation, when appropriate.
+
+Ensure reverse scrolling works naturally.
+
+Do not hardcode an exact number of résumé entries into the camera controller.
+
+Generate or validate focus points from the same data that renders the corresponding timeline entries.
+
+If a focus target is absent, fall back safely to a known valid target.
+
+The camera must not jump to arbitrary positions when a section is added or removed.
+
+Test the relationship between document height, scroll progress, camera progress, and section positions.
+
+The experience must still work when users navigate directly to a section through the navigation menu.
+
+## 21. Content accuracy and authenticity
+
+Use only the personal facts supplied in this prompt or verified from the actual repositories and files provided.
+
+Do not invent:
+- Work experience.
+- Company employment.
+- Academic scores.
+- Certifications.
+- Awards.
+- GitHub repositories.
+- Project statistics.
+- User counts.
+- Production deployment claims.
+- Professional proficiency levels.
+- Contact details.
+
+When information is missing, keep it configurable and do not display an obviously fake value.
+
+Write the copy in natural, confident, concise English.
+
+The portfolio should present me as a curious and growing engineer rather than falsely portraying me as a senior professional.
+
+## 22. Implementation workflow
+
+Work in the following order.
+
+### Phase 1: Inspect
+- Inspect the existing workspace.
+- Identify whether a project already exists.
+- Inspect available assets and supplied avatar files.
+- Read the relevant reference documentation if accessible.
+- Check the available development environment and package manager.
+- Preserve useful existing work rather than overwriting it blindly.
+
+### Phase 2: Plan
+- Establish the component architecture.
+- Define the data model.
+- Design the camera timeline.
+- Identify required assets and fallback assets.
+- Plan desktop, mobile, and reduced-motion behaviour.
+
+### Phase 3: Build the complete application
+- Create the React and TypeScript structure.
+- Implement the 3D canvas.
+- Implement the avatar loader and fallback.
+- Implement scroll-driven camera motion.
+- Implement the hero and all content sections.
+- Implement the projects gallery and details.
+- Implement navigation and theme switching.
+- Implement responsive styles.
+- Implement loading and error states.
+
+### Phase 4: Run and validate
+- Install dependencies.
+- Run the development server if the environment supports it.
+- Run TypeScript checks.
+- Run linting where configured.
+- Run a production build.
+- Fix compilation errors.
+- Fix missing imports and broken asset paths.
+- Check that every visible button and link has a real action.
+- Check that the page works with no GLB model.
+- Check that theme switching works.
+- Check that reverse scrolling works.
+- Check the mobile layout.
+- Check modal keyboard interactions.
+- Fix any runtime errors discovered.
+
+Do not claim a test passed unless you actually ran it and observed its result.
+
+### Phase 5: Final handoff
+Provide:
+- A concise summary of what was implemented.
+- The final project structure.
+- Setup and run commands.
+- A list of personal assets I must supply.
+- Instructions for replacing the avatar model.
+- Instructions for updating projects and social links.
+- Deployment instructions for Vercel, Netlify, or GitHub Pages.
+- Any remaining limitations.
+
+## 23. Quality acceptance criteria
+
+The implementation is complete only when:
+
+1. The page renders as a coherent portfolio, not a generic template.
+2. The hero introduces Priyansh Singh clearly.
+3. The 3D scene renders when WebGL and its assets are available.
+4. A missing avatar does not break the website.
+5. Scrolling moves the camera smoothly through the intended sequence.
+6. Camera focus points remain aligned with the résumé entries.
+7. The About, Skills, Experience, Education, Projects, Achievements, and Contact sections work.
+8. Project cards open functional details.
+9. Repository and demo links work when configured.
+10. Light and dark themes both work.
+11. The layout is responsive.
+12. Reduced-motion preferences are respected.
+13. Loading and error states are handled.
+14. TypeScript and production builds pass in the actual environment.
+15. The site does not depend on the original author's personal assets.
+16. Personal information is centralized and easy to update.
+17. No visible interface control is merely decorative when it appears interactive.
+18. No fake achievements, repository URLs, or contact information are published.
+19. The experience remains usable without WebGL.
+20. The final implementation is maintainable and ready for deployment after the required personal assets are supplied.
+
+## 24. Final instruction
+
+Start by inspecting the current workspace and the reference implementation.
+
+Then build the actual website.
+
+Do not stop after producing a design plan, a wireframe, a screenshot, or a partial hero section.
+
+Do not replace the 3D experience with a static background image and call the work complete.
+
+If an external asset is unavailable, implement a working fallback and continue.
+
+If an implementation choice is unclear, choose the most reliable solution consistent with the visual goals and document the decision.
+
+Prioritize a working, polished end-to-end portfolio over unnecessary complexity.
+
+Begin now.

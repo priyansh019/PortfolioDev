@@ -1,93 +1,87 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-  }
+:root {
+  --font-heading: 'HelveticaNowDisplay-Medium', 'Helvetica Neue', Arial, sans-serif;
+  --font-body: 'HelveticaNowDisplayW01-Rg', 'Helvetica Neue', Arial, sans-serif;
 
-  html {
-    font-family: var(--font-sans);
-    scroll-behavior: smooth;
-    scroll-padding-top: 5rem;
-  }
+  /* Palette extracted directly from user specification */
+  --color-forest-950: #051F20;
+  --color-forest-900: #0B2B26;
+  --color-forest-800: #163832;
+  --color-forest-700: #235347;
+  --color-sage-400: #8EB69B;
+  --color-mint-100: #DAF1DE;
+}
 
-  @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
-  }
+html {
+  scroll-behavior: smooth;
+  background-color: #051F20;
+}
 
-  code, pre, kbd, samp {
-    font-family: var(--font-mono);
+body {
+  font-family: var(--font-body);
+  background-color: #051F20;
+  color: #DAF1DE;
+  overflow-x: hidden;
+}
+
+.font-heading {
+  font-family: var(--font-heading);
+}
+
+.font-body {
+  font-family: var(--font-body);
+}
+
+@keyframes blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
   }
 }
 
-/* Custom scrollbar for modern browsers */
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Custom minimal scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
+  width: 7px;
 }
-
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #051F20;
 }
-
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.3);
+  background: #163832;
   border-radius: 9999px;
+  border: 1px solid #235347;
 }
-
-.dark ::-webkit-scrollbar-thumb {
-  background: rgba(71, 85, 105, 0.4);
-}
-
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(148, 163, 184, 0.5);
+  background: #235347;
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: rgba(71, 85, 105, 0.6);
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
 
-/* Fluid canvas & subtle grid patterns */
-.liquid-grid-pattern {
-  background-size: 32px 32px;
-  background-image: 
-    linear-gradient(to right, rgba(0, 0, 0, 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+/* Smooth reveal animation utilities */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-.dark .liquid-grid-pattern {
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-}
-
-/* Interactive card spotlight reflection */
-.card-spotlight {
-  position: relative;
-  overflow: hidden;
-}
-
-.card-spotlight::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(
-    600px circle at var(--mouse-x, -500px) var(--mouse-y, -500px),
-    rgba(56, 189, 248, 0.08),
-    transparent 40%
-  );
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  z-index: 1;
-}
-
-.card-spotlight:hover::before {
-  opacity: 1;
+.animate-fade-in-up {
+  animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
