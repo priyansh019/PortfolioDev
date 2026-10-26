@@ -29,7 +29,8 @@ export const SkillsSection: React.FC = () => {
   const [activeCardIndex, setActiveCardIndex] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-  const [expandedCardIds, setExpandedCardIds] = useState<Record<string, boolean>>({});
+  // Hover-driven expansion: card expands smoothly when hovered, collapses when cursor leaves
+  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
 
   const checkScrollBounds = () => {
     const el = scrollContainerRef.current;
@@ -70,14 +71,6 @@ export const SkillsSection: React.FC = () => {
       left: direction === 'left' ? -scrollAmount : scrollAmount,
       behavior: 'smooth',
     });
-  };
-
-  const toggleCardExpansion = (categoryId: string) => {
-    soundManager.playClick();
-    setExpandedCardIds((prev) => ({
-      ...prev,
-      [categoryId]: !prev[categoryId],
-    }));
   };
 
   return (
@@ -185,16 +178,26 @@ export const SkillsSection: React.FC = () => {
           {SKILL_CATEGORIES.map((category, idx) => {
             const Icon = CATEGORY_ICONS[category.id] || Code;
             const isCurrent = activeCardIndex === idx;
-            const isExpanded = !!expandedCardIds[category.id];
+            const isExpanded = hoveredCardId === category.id;
 
             return (
               <motion.div
                 key={category.id}
                 layout
-                onClick={() => toggleCardExpansion(category.id)}
-                className={`shrink-0 w-[260px] sm:w-[280px] md:w-[300px] snap-center rounded-2xl p-4 sm:p-5 bg-[#0B2B26] border transition-all duration-300 flex flex-col justify-between cursor-pointer group ${
-                  isCurrent
-                    ? 'border-[#235347] shadow-[0_15px_35px_-10px_rgba(35,83,71,0.35)] -translate-y-1'
+                onMouseEnter={() => {
+                  soundManager.playHover();
+                  setHoveredCardId(category.id);
+                }}
+                onMouseLeave={() => setHoveredCardId(null)}
+                onClick={() => {
+                  soundManager.playClick();
+                  setHoveredCardId(hoveredCardId === category.id ? null : category.id);
+                }}
+                className={`shrink-0 w-[260px] sm:w-[280px] md:w-[305px] snap-center rounded-2xl p-4 sm:p-5 bg-[#0B2B26] border transition-all duration-300 flex flex-col justify-between cursor-pointer group ${
+                  isExpanded
+                    ? 'border-[#8EB69B] bg-[#0e3630] shadow-[0_20px_45px_-10px_rgba(142,182,155,0.25)] -translate-y-2'
+                    : isCurrent
+                    ? 'border-[#235347] shadow-[0_15px_35px_-10px_rgba(35,83,71,0.35)] -translate-y-0.5'
                     : 'border-[#163832] hover:border-[#235347]'
                 }`}
               >
@@ -300,18 +303,17 @@ export const SkillsSection: React.FC = () => {
                   </AnimatePresence>
                 </div>
 
-                {/* Card Expansion Toggle Indicator */}
+                {/* Card Expansion Hover Indicator */}
                 <div className="pt-3 mt-3 border-t border-[#163832] flex items-center justify-between text-[11px] font-mono text-[#8EB69B]">
                   <span className="text-[#DAF1DE] flex items-center gap-1">
                     {isExpanded ? (
                       <>
-                        <ChevronUp className="w-3.5 h-3.5 text-[#DAF1DE]" />
-                        <span>Collapse</span>
+                        <Sparkles className="w-3.5 h-3.5 text-[#DAF1DE] animate-pulse" />
+                        <span className="text-[#DAF1DE] font-medium">Expanded view</span>
                       </>
                     ) : (
                       <>
-                        <ChevronDown className="w-3.5 h-3.5 text-[#DAF1DE]" />
-                        <span>Expand ({category.skills.length})</span>
+                        <span className="text-[#8EB69B]/70">Hover over to expand</span>
                       </>
                     )}
                   </span>

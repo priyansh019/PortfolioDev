@@ -26,11 +26,11 @@ export const BackgroundVideo: React.FC = () => {
       {/* Base Canvas Color */}
       <div className="absolute inset-0 bg-[#051F20]" />
 
-      {/* Restored Red Cyberpunk Glow in Hero top right */}
+      {/* Deep Forest Obsidian & Mint Glow using palette colors */}
       <div
-        className="absolute -top-32 right-0 w-[750px] h-[750px] rounded-full blur-[180px] opacity-55 transition-transform duration-700 pointer-events-none"
+        className="absolute -top-32 right-0 w-[750px] h-[750px] rounded-full blur-[180px] opacity-40 transition-transform duration-700 pointer-events-none"
         style={{
-          background: 'radial-gradient(circle, rgba(225, 29, 72, 0.6) 0%, rgba(185, 28, 28, 0.35) 50%, transparent 75%)',
+          background: 'radial-gradient(circle, #235347 0%, #0B2B26 50%, transparent 75%)',
           transform: `translateY(${scrollY * 0.12}px)`,
         }}
       />

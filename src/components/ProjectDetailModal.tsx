@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
-import { X, ExternalLink, Github, Sparkles, CheckCircle2, Terminal, Shield, Cpu, Code2 } from 'lucide-react';
+import { createPortal } from 'react-dom';
+import { X, ExternalLink, Github, Sparkles } from 'lucide-react';
 import { DetailedProject } from '../data/projects.ts';
 import { soundManager } from '../utils/sound.ts';
 
@@ -29,16 +30,16 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
 
   if (!project) return null;
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 md:p-8 bg-[#051F20]/95 backdrop-blur-xl animate-in fade-in duration-200"
+      className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 md:p-8 bg-black/85 backdrop-blur-2xl animate-in fade-in duration-200"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
     >
-      {/* Modal Dialog Card - Perfectly centered with safe clearance from top navbar */}
+      {/* Modal Dialog Card - Perfectly centered in browser viewport regardless of page scroll */}
       <div
-        className="relative w-full max-w-3xl bg-[#0B2B26] border border-[#235347] rounded-2xl sm:rounded-3xl p-5 sm:p-7 text-[#DAF1DE] shadow-[0_25px_60px_-15px_rgba(5,31,32,0.9)] max-h-[86vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200"
+        className="relative w-full max-w-3xl bg-[#0B2B26] border border-[#235347] rounded-2xl sm:rounded-3xl p-5 sm:p-7 text-[#DAF1DE] shadow-[0_25px_70px_-15px_rgba(0,0,0,0.95)] max-h-[86vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200"
         onClick={(e) => e.stopPropagation()}
         style={{ fontFamily: 'var(--font-body)' }}
       >
@@ -192,6 +193,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };

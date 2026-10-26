@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Github, Linkedin, ExternalLink, Code2, Award, ChevronDown, Sparkles } from 'lucide-react';
 import { useTypewriter } from '../hooks/useTypewriter.ts';
 import { soundManager } from '../utils/sound.ts';
 import { PROFILE } from '../data/profile.ts';
 import { SplineScene } from './ui/splite.tsx';
-import { Spotlight } from './ui/spotlight.tsx';
+import { Spotlight, MouseSpotlight } from './ui/spotlight.tsx';
 
 interface MainframeHeroProps {
   onNavigate: (sectionId: string) => void;
@@ -13,6 +13,7 @@ interface MainframeHeroProps {
 export const MainframeHero: React.FC<MainframeHeroProps> = ({ onNavigate }) => {
   const [pillsVisible, setPillsVisible] = useState(false);
   const [copied, setCopied] = useState(false);
+  const splineContainerRef = useRef<HTMLDivElement>(null);
 
   const typewriterText =
     'Glad you stopped in. Good taste tends to find us. Exploring software engineering, AI, IoT, and cybersecurity. What are we building?';
@@ -26,6 +27,26 @@ export const MainframeHero: React.FC<MainframeHeroProps> = ({ onNavigate }) => {
       setPillsVisible(true);
     }, 300);
     return () => clearTimeout(timer);
+  }, []);
+
+  // Forward whole-page mouse movement directly to Spline canvas so robot tracks cursor everywhere
+  useEffect(() => {
+    const handleGlobalMouseMove = (e: MouseEvent) => {
+      const canvas = splineContainerRef.current?.querySelector('canvas');
+      if (!canvas) return;
+      const event = new PointerEvent('pointermove', {
+        clientX: e.clientX,
+        clientY: e.clientY,
+        screenX: e.screenX,
+        screenY: e.screenY,
+        bubbles: true,
+        cancelable: true,
+      });
+      canvas.dispatchEvent(event);
+    };
+
+    window.addEventListener('mousemove', handleGlobalMouseMove, { passive: true });
+    return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
   }, []);
 
   const handleCopy = (e: React.MouseEvent) => {
@@ -65,31 +86,37 @@ export const MainframeHero: React.FC<MainframeHeroProps> = ({ onNavigate }) => {
   return (
     <section
       id="hero"
-      className="relative min-h-screen flex flex-col justify-center px-6 sm:px-10 md:px-12 lg:px-16 pt-24 pb-16 overflow-hidden bg-gradient-to-b from-[#28070d] via-[#140306] to-[#051F20]"
+      className="relative min-h-screen flex flex-col justify-center px-6 sm:px-10 md:px-12 lg:px-16 pt-24 pb-16 overflow-hidden bg-black"
       style={{ fontFamily: 'var(--font-body)' }}
     >
-      {/* Restored Rich Crimson Red Cyberpunk Atmosphere */}
+      {/* Deep Forest Teal & Obsidian Ambient Palette Glows */}
       <div
-        className="absolute top-1/4 right-0 w-[600px] lg:w-[900px] h-[600px] lg:h-[900px] rounded-full blur-[150px] pointer-events-none opacity-55"
+        className="absolute top-1/4 right-0 w-[600px] lg:w-[850px] h-[600px] lg:h-[850px] rounded-full blur-[160px] pointer-events-none opacity-30"
         style={{
-          background: 'radial-gradient(circle, rgba(225, 29, 72, 0.55) 0%, rgba(159, 18, 57, 0.35) 45%, transparent 75%)',
+          background: 'radial-gradient(circle, #235347 0%, #0B2B26 50%, transparent 75%)',
         }}
         aria-hidden="true"
       />
       <div
-        className="absolute -top-32 left-10 w-[500px] h-[500px] rounded-full blur-[150px] pointer-events-none opacity-35"
+        className="absolute -top-32 left-10 w-[500px] h-[500px] rounded-full blur-[150px] pointer-events-none opacity-20"
         style={{
-          background: 'radial-gradient(circle, rgba(239, 68, 68, 0.45) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, #8EB69B 0%, transparent 70%)',
         }}
         aria-hidden="true"
       />
 
-      {/* Interactive Cursor Spotlight */}
+      {/* Original Aceternity Spotlight Light Beams from the Demo Prompt */}
       <Spotlight
-        className="-top-40 left-0 md:left-60 md:-top-20 opacity-70"
-        size={350}
+        className="-top-40 left-0 md:left-60 md:-top-20"
         fill="white"
       />
+      <Spotlight
+        className="-top-20 right-0 md:right-32 opacity-70"
+        fill="#DAF1DE"
+      />
+
+      {/* Interactive Cursor Spotlight Tracker - Follows mouse across the page */}
+      <MouseSpotlight size={480} />
 
       {/* Main Hero Content Layout: Two Columns (Left Editorial Copy + Right 3D Spline Scene) */}
       <div className="max-w-7xl mx-auto w-full relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center min-h-[calc(100vh-140px)]">
@@ -275,24 +302,39 @@ export const MainframeHero: React.FC<MainframeHeroProps> = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* Right Column: Free-Floating Interactive 3D Spline Scene (No box / no card container) */}
-        <div className="lg:col-span-5 relative w-full h-[400px] sm:h-[500px] lg:h-[620px] flex items-center justify-center pointer-events-auto">
-          {/* Free-floating ambient red glow behind 3D avatar */}
+        {/* Right Column: Free-Floating Interactive 3D Spline Scene (Zero box / no cutting out) */}
+        <div
+          ref={splineContainerRef}
+          className="lg:col-span-5 relative w-full lg:w-[620px] xl:w-[720px] h-[500px] sm:h-[600px] lg:h-[700px] xl:h-[760px] flex items-center justify-center pointer-events-auto overflow-visible select-none"
+          style={{
+            maskImage: 'linear-gradient(to bottom, black 84%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to bottom, black 84%, transparent 100%)',
+          }}
+        >
+          {/* Subtle palette mint/teal floor reflection glow */}
           <div
-            className="absolute inset-0 w-full h-full rounded-full blur-[130px] opacity-45 pointer-events-none"
+            className="absolute bottom-6 w-[400px] h-[180px] rounded-full blur-[90px] opacity-25 pointer-events-none"
             style={{
-              background: 'radial-gradient(circle, rgba(244, 63, 94, 0.5) 0%, rgba(225, 29, 72, 0.25) 50%, transparent 75%)',
+              background: 'radial-gradient(circle, #8EB69B 0%, #163832 50%, transparent 75%)',
             }}
             aria-hidden="true"
           />
 
-          {/* Spline 3D Scene Component rendered natively directly on page */}
-          <SplineScene
-            scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
-            className="w-full h-full relative z-10"
-          />
+          {/* Spline 3D Scene Component - Sized up slightly and unclipped */}
+          <div className="w-full h-full transform scale-[1.08] sm:scale-[1.12] lg:scale-[1.15] transition-transform duration-500 flex items-center justify-center">
+            <SplineScene
+              scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+              className="w-full h-full"
+            />
+          </div>
         </div>
       </div>
+
+      {/* Smooth transition from pitch black hero canvas into #051F20 background */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-28 bg-gradient-to-b from-transparent to-[#051F20] pointer-events-none z-10"
+        aria-hidden="true"
+      />
 
       {/* Floating Scroll Down Indicator */}
       <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-1 text-[#8EB69B]/70 hover:text-[#DAF1DE] transition-colors cursor-pointer z-20">
