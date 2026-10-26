@@ -132,7 +132,7 @@ export const ProjectsSection: React.FC = () => {
                   Featured Projects
                 </h2>
                 <p className="text-sm sm:text-base text-[#8EB69B] mt-2 max-w-xl leading-relaxed">
-                  Authentic software systems from my GitHub repository: network scanners, AI workflow tools, banking prototypes, and algorithmic solutions.
+                  Authentic software systems from my GitHub repository: network scanners, AI workflow accelerators, embedded robotics, and algorithmic solutions.
                 </p>
               </div>
 

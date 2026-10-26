@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { X, ExternalLink, Github, Sparkles } from 'lucide-react';
 import { DetailedProject } from '../data/projects.ts';
 import { soundManager } from '../utils/sound.ts';
@@ -31,20 +32,44 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
   if (!project) return null;
 
   return createPortal(
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 md:p-8 bg-black/85 backdrop-blur-2xl animate-in fade-in duration-200"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-    >
-      {/* Modal Dialog Card - Perfectly centered in browser viewport regardless of page scroll */}
+    <AnimatePresence>
       <div
-        className="relative w-full max-w-3xl bg-[#0B2B26] border border-[#235347] rounded-2xl sm:rounded-3xl p-5 sm:p-7 text-[#DAF1DE] shadow-[0_25px_70px_-15px_rgba(0,0,0,0.95)] max-h-[86vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200"
-        onClick={(e) => e.stopPropagation()}
-        style={{ fontFamily: 'var(--font-body)' }}
+        className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 md:p-8 bg-black/85 backdrop-blur-2xl"
+        onClick={onClose}
+        role="dialog"
+        aria-modal="true"
       >
-        {/* Sticky Header with generous padding and clear category tag */}
-        <div className="flex items-start justify-between gap-4 pb-4 border-b border-[#163832] shrink-0 bg-[#0B2B26]">
+        {/* Magical Ambient Bloom Aura */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.6 }}
+          animate={{ opacity: 0.4, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.6 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="absolute w-[520px] h-[520px] rounded-full blur-[140px] pointer-events-none"
+          style={{
+            background: `radial-gradient(circle, ${project.coverAccent} 0%, rgba(35,83,71,0.4) 50%, transparent 75%)`,
+          }}
+          aria-hidden="true"
+        />
+
+        {/* Modal Dialog Card - Magically Appearing into View */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.88, y: 30, filter: 'blur(14px)' }}
+          animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, scale: 0.9, y: 20, filter: 'blur(10px)' }}
+          transition={{ type: 'spring', damping: 26, stiffness: 340 }}
+          className="relative w-full max-w-3xl bg-[#0B2B26] border border-[#235347] rounded-2xl sm:rounded-3xl p-5 sm:p-7 text-[#DAF1DE] shadow-[0_25px_70px_-15px_rgba(0,0,0,0.95)] max-h-[86vh] flex flex-col overflow-hidden"
+          onClick={(e) => e.stopPropagation()}
+          style={{ fontFamily: 'var(--font-body)' }}
+        >
+          {/* Subtle Magical Shimmering Border Highlight */}
+          <div
+            className="absolute -inset-[1px] rounded-2xl sm:rounded-3xl pointer-events-none opacity-25 bg-gradient-to-r from-transparent via-[#8EB69B] to-transparent animate-pulse"
+            aria-hidden="true"
+          />
+
+          {/* Sticky Header with generous padding and clear category tag */}
+          <div className="flex items-start justify-between gap-4 pb-4 border-b border-[#163832] shrink-0 bg-[#0B2B26] relative z-10">
           <div className="pr-2">
             <div className="flex flex-wrap items-center gap-2 mb-2">
               <span className="text-xs font-mono tracking-widest uppercase px-3 py-1 rounded-full bg-[#163832] text-[#DAF1DE] border border-[#235347]">
@@ -192,8 +217,9 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
             Close
           </button>
         </div>
-      </div>
-    </div>,
-    document.body
-  );
+      </motion.div>
+    </div>
+  </AnimatePresence>,
+  document.body
+);
 };

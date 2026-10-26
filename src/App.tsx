@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { BackgroundVideo } from './components/BackgroundVideo.tsx';
 import { MainframeNavbar } from './components/MainframeNavbar.tsx';
 import { MainframeHero } from './components/MainframeHero.tsx';
@@ -25,16 +26,20 @@ export default function App() {
     subtitle: '',
   });
 
-  // Track active section on scroll: sequence starts with About, then Projects, etc.
+  // Track active section reliably using getBoundingClientRect across all sections
   useEffect(() => {
     const sectionIds = ['hero', 'about', 'projects', 'skills', 'timeline', 'credentials', 'contact'];
     const handleScroll = () => {
-      const scrollPosition = window.scrollY + window.innerHeight * 0.35;
+      if (window.scrollY < 180) {
+        setActiveSection('hero');
+        return;
+      }
+
       for (let i = sectionIds.length - 1; i >= 0; i--) {
         const el = document.getElementById(sectionIds[i]);
         if (el) {
-          const top = el.offsetTop;
-          if (scrollPosition >= top) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= window.innerHeight * 0.38) {
             setActiveSection(sectionIds[i]);
             break;
           }
@@ -118,13 +123,17 @@ export default function App() {
       </main>
 
       {/* Interactive Detail Modal / Drawer */}
-      <MainframeModal
-        isOpen={modalState.isOpen}
-        onClose={handleCloseModal}
-        activeTab={modalState.tab}
-        title={modalState.title}
-        subtitle={modalState.subtitle}
-      />
+      <AnimatePresence>
+        {modalState.isOpen && (
+          <MainframeModal
+            isOpen={modalState.isOpen}
+            onClose={handleCloseModal}
+            activeTab={modalState.tab}
+            title={modalState.title}
+            subtitle={modalState.subtitle}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 }

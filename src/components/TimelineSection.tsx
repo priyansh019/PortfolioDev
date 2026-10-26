@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Calendar,
   MapPin,
@@ -120,27 +121,27 @@ const ROADMAP_WAYPOINTS = [
 ];
 
 export const TimelineSection: React.FC = () => {
-  const [activeStationIndex, setActiveStationIndex] = useState(0);
+  const [[activeStationIndex, direction], setStation] = useState([0, 0]);
 
   const activeWaypoint = ROADMAP_WAYPOINTS[activeStationIndex];
   const ActiveIcon = activeWaypoint.icon;
 
   const handleSelectStation = (index: number) => {
     soundManager.playClick();
-    setActiveStationIndex(index);
+    setStation([index, index > activeStationIndex ? 1 : -1]);
   };
 
   const handlePrevStation = () => {
     if (activeStationIndex > 0) {
       soundManager.playClick();
-      setActiveStationIndex(activeStationIndex - 1);
+      setStation([activeStationIndex - 1, -1]);
     }
   };
 
   const handleNextStation = () => {
     if (activeStationIndex < ROADMAP_WAYPOINTS.length - 1) {
       soundManager.playClick();
-      setActiveStationIndex(activeStationIndex + 1);
+      setStation([activeStationIndex + 1, 1]);
     }
   };
 
@@ -309,99 +310,137 @@ export const TimelineSection: React.FC = () => {
           {/* Subtle Ambient Glow */}
           <div className="absolute top-0 right-0 w-96 h-96 bg-[#235347]/30 rounded-full blur-3xl pointer-events-none" />
 
-          <div className="relative z-10">
-            {/* Station Status Bar */}
-            <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-[#163832]">
-              <div className="flex items-center gap-2.5">
-                <span className="px-3 py-1 rounded-full bg-[#DAF1DE] text-[#051F20] text-xs font-mono font-bold uppercase tracking-wider">
-                  Station {activeWaypoint.stationNumber} Active
-                </span>
-                <span className="text-xs font-mono px-3 py-1 rounded-full bg-[#163832] text-[#8EB69B] border border-[#235347]">
-                  {activeWaypoint.category}
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2 text-xs font-mono text-[#DAF1DE]">
-                <Users className="w-3.5 h-3.5 text-[#8EB69B]" />
-                <span className="font-semibold">{activeWaypoint.metrics}</span>
-              </div>
-            </div>
-
-            {/* Station Main Header */}
-            <div className="flex items-start gap-4 mb-5">
-              <div className="p-3.5 rounded-2xl bg-[#163832] text-[#DAF1DE] border border-[#235347] shrink-0 mt-1">
-                <ActiveIcon className="w-6 h-6" />
-              </div>
-
-              <div>
-                <h3
-                  className="text-2xl sm:text-3xl md:text-4xl font-medium tracking-tight text-[#DAF1DE] mb-1.5"
-                  style={{ fontFamily: 'var(--font-heading)' }}
-                >
-                  {activeWaypoint.headline}
-                </h3>
-                <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-[#8EB69B]">
-                  <span className="text-[#DAF1DE] font-medium">{activeWaypoint.role}</span>
-                  <span>·</span>
-                  <span>{activeWaypoint.organization}</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Detailed Narrative */}
-            <p className="text-sm sm:text-base text-[#8EB69B] leading-relaxed mb-6 max-w-3xl">
-              {activeWaypoint.description}
-            </p>
-
-            {/* Key Learnings & Engineering Outcomes */}
-            <div className="mb-6 p-5 rounded-2xl bg-[#051F20]/70 border border-[#163832]">
-              <span className="text-xs font-mono uppercase tracking-wider text-[#DAF1DE] block mb-3">
-                Key Accomplishments & Learnings:
-              </span>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {activeWaypoint.learnings.map((learning, i) => (
-                  <div
-                    key={i}
-                    className="flex items-start gap-2 text-xs text-[#8EB69B] leading-snug"
-                  >
-                    <CheckCircle2 className="w-4 h-4 text-[#DAF1DE] shrink-0 mt-0.5" />
-                    <span>{learning}</span>
+          <div className="relative overflow-hidden min-h-[380px]">
+            <AnimatePresence mode="wait" custom={direction}>
+              <motion.div
+                key={activeWaypoint.id}
+                custom={direction}
+                variants={{
+                  enter: (dir: number) => ({
+                    x: dir >= 0 ? 50 : -50,
+                    opacity: 0,
+                    filter: 'blur(6px)',
+                  }),
+                  center: {
+                    x: 0,
+                    opacity: 1,
+                    filter: 'blur(0px)',
+                    transition: {
+                      x: { type: 'spring', stiffness: 340, damping: 28 },
+                      opacity: { duration: 0.25 },
+                      filter: { duration: 0.25 },
+                    },
+                  },
+                  exit: (dir: number) => ({
+                    x: dir >= 0 ? -50 : 50,
+                    opacity: 0,
+                    filter: 'blur(6px)',
+                    transition: {
+                      x: { type: 'spring', stiffness: 340, damping: 28 },
+                      opacity: { duration: 0.2 },
+                      filter: { duration: 0.2 },
+                    },
+                  }),
+                }}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                className="relative z-10"
+              >
+                {/* Station Status Bar */}
+                <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b border-[#163832]">
+                  <div className="flex items-center gap-2.5">
+                    <span className="px-3 py-1 rounded-full bg-[#DAF1DE] text-[#051F20] text-xs font-mono font-bold uppercase tracking-wider">
+                      Station {activeWaypoint.stationNumber} Active
+                    </span>
+                    <span className="text-xs font-mono px-3 py-1 rounded-full bg-[#163832] text-[#8EB69B] border border-[#235347]">
+                      {activeWaypoint.category}
+                    </span>
                   </div>
-                ))}
-              </div>
-            </div>
 
-            {/* Station Footer Metadata */}
-            <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#163832] text-xs font-mono text-[#8EB69B]/80">
-              <div className="flex flex-wrap items-center gap-4">
-                <span className="flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-[#DAF1DE]" /> {activeWaypoint.location}
-                </span>
-                <span>·</span>
-                <span className="flex items-center gap-1.5">
-                  <Calendar className="w-3.5 h-3.5 text-[#DAF1DE]" /> {activeWaypoint.period}
-                </span>
-              </div>
+                  <div className="flex items-center gap-2 text-xs font-mono text-[#DAF1DE]">
+                    <Users className="w-3.5 h-3.5 text-[#8EB69B]" />
+                    <span className="font-semibold">{activeWaypoint.metrics}</span>
+                  </div>
+                </div>
 
-              <div className="flex items-center gap-2">
-                <button
-                  type="button"
-                  onClick={handlePrevStation}
-                  disabled={activeStationIndex === 0}
-                  className="px-3 py-1.5 rounded-lg bg-[#163832] text-[#DAF1DE] hover:bg-[#235347] disabled:opacity-30 cursor-pointer"
-                >
-                  ← Prev
-                </button>
-                <button
-                  type="button"
-                  onClick={handleNextStation}
-                  disabled={activeStationIndex === ROADMAP_WAYPOINTS.length - 1}
-                  className="px-3 py-1.5 rounded-lg bg-[#DAF1DE] text-[#051F20] font-semibold hover:bg-[#8EB69B] disabled:opacity-30 cursor-pointer"
-                >
-                  Next Station →
-                </button>
-              </div>
-            </div>
+                {/* Station Main Header */}
+                <div className="flex items-start gap-4 mb-5">
+                  <div className="p-3.5 rounded-2xl bg-[#163832] text-[#DAF1DE] border border-[#235347] shrink-0 mt-1">
+                    <ActiveIcon className="w-6 h-6" />
+                  </div>
+
+                  <div>
+                    <h3
+                      className="text-2xl sm:text-3xl md:text-4xl font-medium tracking-tight text-[#DAF1DE] mb-1.5"
+                      style={{ fontFamily: 'var(--font-heading)' }}
+                    >
+                      {activeWaypoint.headline}
+                    </h3>
+                    <div className="flex flex-wrap items-center gap-2 text-xs sm:text-sm text-[#8EB69B]">
+                      <span className="text-[#DAF1DE] font-medium">{activeWaypoint.role}</span>
+                      <span>·</span>
+                      <span>{activeWaypoint.organization}</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Detailed Narrative */}
+                <p className="text-sm sm:text-base text-[#8EB69B] leading-relaxed mb-6 max-w-3xl">
+                  {activeWaypoint.description}
+                </p>
+
+                {/* Key Learnings & Engineering Outcomes */}
+                <div className="mb-6 p-5 rounded-2xl bg-[#051F20]/70 border border-[#163832]">
+                  <span className="text-xs font-mono uppercase tracking-wider text-[#DAF1DE] block mb-3">
+                    Key Accomplishments & Learnings:
+                  </span>
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {activeWaypoint.learnings.map((learning, i) => (
+                      <div
+                        key={i}
+                        className="flex items-start gap-2 text-xs text-[#8EB69B] leading-snug"
+                      >
+                        <CheckCircle2 className="w-4 h-4 text-[#DAF1DE] shrink-0 mt-0.5" />
+                        <span>{learning}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Station Footer Metadata */}
+                <div className="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-[#163832] text-xs font-mono text-[#8EB69B]/80">
+                  <div className="flex flex-wrap items-center gap-4">
+                    <span className="flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-[#DAF1DE]" /> {activeWaypoint.location}
+                    </span>
+                    <span>·</span>
+                    <span className="flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5 text-[#DAF1DE]" /> {activeWaypoint.period}
+                    </span>
+                  </div>
+
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={handlePrevStation}
+                      disabled={activeStationIndex === 0}
+                      className="px-3 py-1.5 rounded-lg bg-[#163832] text-[#DAF1DE] hover:bg-[#235347] disabled:opacity-30 cursor-pointer"
+                    >
+                      ← Prev
+                    </button>
+                    <button
+                      type="button"
+                      onClick={handleNextStation}
+                      disabled={activeStationIndex === ROADMAP_WAYPOINTS.length - 1}
+                      className="px-3 py-1.5 rounded-lg bg-[#DAF1DE] text-[#051F20] font-semibold hover:bg-[#8EB69B] disabled:opacity-30 cursor-pointer"
+                    >
+                      Next Station →
+                    </button>
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </div>

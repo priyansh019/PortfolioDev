@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   X,
   ExternalLink,
@@ -129,17 +130,35 @@ export const MainframeModal: React.FC<MainframeModalProps> = ({
   };
 
   return createPortal(
-    <div
-      className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 md:p-8 bg-black/85 backdrop-blur-2xl animate-in fade-in duration-200"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-    >
+    <AnimatePresence>
       <div
-        className="relative w-full max-w-4xl bg-[#0B2B26] border border-[#235347] rounded-2xl sm:rounded-3xl p-5 sm:p-8 text-[#DAF1DE] shadow-[0_25px_60px_-15px_rgba(5,31,32,0.9)] max-h-[86vh] flex flex-col overflow-hidden animate-in zoom-in-95 duration-200"
-        onClick={(e) => e.stopPropagation()}
-        style={{ fontFamily: 'var(--font-body)' }}
+        className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 md:p-8 bg-black/85 backdrop-blur-2xl"
+        onClick={onClose}
+        role="dialog"
+        aria-modal="true"
       >
+        {/* Magical Ambient Bloom Aura */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.6 }}
+          animate={{ opacity: 0.35, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.6 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="absolute w-[500px] h-[500px] rounded-full blur-[140px] pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle, #8EB69B 0%, #235347 50%, transparent 75%)',
+          }}
+          aria-hidden="true"
+        />
+
+        <motion.div
+          initial={{ opacity: 0, scale: 0.88, y: 30, filter: 'blur(14px)' }}
+          animate={{ opacity: 1, scale: 1, y: 0, filter: 'blur(0px)' }}
+          exit={{ opacity: 0, scale: 0.9, y: 20, filter: 'blur(10px)' }}
+          transition={{ type: 'spring', damping: 26, stiffness: 340 }}
+          className="relative w-full max-w-4xl bg-[#0B2B26] border border-[#235347] rounded-2xl sm:rounded-3xl p-5 sm:p-8 text-[#DAF1DE] shadow-[0_25px_70px_-15px_rgba(0,0,0,0.95)] max-h-[86vh] flex flex-col overflow-hidden"
+          onClick={(e) => e.stopPropagation()}
+          style={{ fontFamily: 'var(--font-body)' }}
+        >
         {/* Top Header */}
         <div className="flex items-start justify-between gap-4 pb-4 border-b border-[#163832] shrink-0">
           <div>
@@ -609,8 +628,9 @@ export const MainframeModal: React.FC<MainframeModalProps> = ({
             Close
           </button>
         </div>
-      </div>
-    </div>,
-    document.body
-  );
+      </motion.div>
+    </div>
+  </AnimatePresence>,
+  document.body
+);
 };

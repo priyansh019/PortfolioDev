@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { Github, Linkedin, ExternalLink } from 'lucide-react';
 import { soundManager } from '../utils/sound.ts';
 import { PROFILE } from '../data/profile.ts';
@@ -81,9 +82,9 @@ export const MainframeNavbar: React.FC<MainframeNavbarProps> = ({
           </span>
         </button>
 
-        {/* Desktop nav links with prominent active section highlight (center, hidden below md) */}
+        {/* Desktop nav links with animated sliding toggle highlight (center, hidden below md) */}
         <nav
-          className="hidden md:flex flex-row items-center gap-1.5 bg-[#0B2B26]/85 border border-[#235347]/80 rounded-full p-1.5 backdrop-blur-md shadow-lg shadow-[#051F20]/50"
+          className="hidden md:flex flex-row items-center gap-1 bg-[#0B2B26]/85 border border-[#235347]/80 rounded-full p-1.5 backdrop-blur-md shadow-lg shadow-[#051F20]/50 relative"
           style={{ fontFamily: 'var(--font-body)' }}
           aria-label="Desktop Navigation"
         >
@@ -95,16 +96,30 @@ export const MainframeNavbar: React.FC<MainframeNavbarProps> = ({
                 type="button"
                 onClick={() => handleLinkClick(item.id)}
                 onMouseEnter={() => soundManager.playHover()}
-                className={`text-[14px] lg:text-[15px] transition-all duration-200 cursor-pointer rounded-full py-1.5 px-4 font-medium tracking-normal relative flex items-center gap-1.5 ${
+                className={`relative text-[14px] lg:text-[15px] cursor-pointer rounded-full py-1.5 px-4 font-medium tracking-normal transition-colors duration-200 z-10 flex items-center gap-1.5 ${
                   isActive
-                    ? 'bg-[#DAF1DE] text-[#051F20] font-bold shadow-md shadow-[#DAF1DE]/25 scale-[1.03]'
-                    : 'text-[#8EB69B] hover:text-[#DAF1DE] hover:bg-[#163832]/70'
+                    ? 'text-[#051F20] font-bold'
+                    : 'text-[#8EB69B] hover:text-[#DAF1DE]'
                 }`}
               >
+                {/* Active indicator dot */}
                 {isActive && (
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#051F20] animate-pulse" />
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#051F20] animate-pulse z-10" />
                 )}
-                <span>{item.label}</span>
+                <span className="relative z-10">{item.label}</span>
+
+                {/* Animated Shared Layout Sliding Toggle Pill */}
+                {isActive && (
+                  <motion.div
+                    layoutId="active-navbar-pill"
+                    transition={{
+                      type: 'spring',
+                      stiffness: 420,
+                      damping: 32,
+                    }}
+                    className="absolute inset-0 rounded-full bg-[#DAF1DE] shadow-md shadow-[#DAF1DE]/25 z-0"
+                  />
+                )}
               </button>
             );
           })}

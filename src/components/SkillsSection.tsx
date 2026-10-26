@@ -1,5 +1,4 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import {
   Code,
   Terminal,
@@ -9,12 +8,10 @@ import {
   ChevronLeft,
   ChevronRight,
   Sparkles,
-  ChevronDown,
-  ChevronUp,
-  CheckCircle2,
 } from 'lucide-react';
 import { SKILL_CATEGORIES, SkillCategory } from '../data/skills.ts';
 import { soundManager } from '../utils/sound.ts';
+import { SkillDetailModal } from './SkillDetailModal.tsx';
 
 const CATEGORY_ICONS: Record<string, React.FC<{ className?: string }>> = {
   programming: Code,
@@ -29,8 +26,8 @@ export const SkillsSection: React.FC = () => {
   const [activeCardIndex, setActiveCardIndex] = useState(0);
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(true);
-  // Hover-driven expansion: card expands smoothly when hovered, collapses when cursor leaves
-  const [hoveredCardId, setHoveredCardId] = useState<string | null>(null);
+  // Selected category opens up the dedicated magical detail page/modal on click
+  const [selectedCategory, setSelectedCategory] = useState<SkillCategory | null>(null);
 
   const checkScrollBounds = () => {
     const el = scrollContainerRef.current;
@@ -178,33 +175,25 @@ export const SkillsSection: React.FC = () => {
           {SKILL_CATEGORIES.map((category, idx) => {
             const Icon = CATEGORY_ICONS[category.id] || Code;
             const isCurrent = activeCardIndex === idx;
-            const isExpanded = hoveredCardId === category.id;
 
             return (
-              <motion.div
+              <div
                 key={category.id}
-                layout
-                onMouseEnter={() => {
-                  soundManager.playHover();
-                  setHoveredCardId(category.id);
-                }}
-                onMouseLeave={() => setHoveredCardId(null)}
                 onClick={() => {
                   soundManager.playClick();
-                  setHoveredCardId(hoveredCardId === category.id ? null : category.id);
+                  setSelectedCategory(category);
                 }}
+                onMouseEnter={() => soundManager.playHover()}
                 className={`shrink-0 w-[260px] sm:w-[280px] md:w-[305px] snap-center rounded-2xl p-4 sm:p-5 bg-[#0B2B26] border transition-all duration-300 flex flex-col justify-between cursor-pointer group ${
-                  isExpanded
-                    ? 'border-[#8EB69B] bg-[#0e3630] shadow-[0_20px_45px_-10px_rgba(142,182,155,0.25)] -translate-y-2'
-                    : isCurrent
+                  isCurrent
                     ? 'border-[#235347] shadow-[0_15px_35px_-10px_rgba(35,83,71,0.35)] -translate-y-0.5'
-                    : 'border-[#163832] hover:border-[#235347]'
+                    : 'border-[#163832] hover:border-[#8EB69B] hover:shadow-[0_20px_45px_-10px_rgba(142,182,155,0.22)] hover:-translate-y-1.5'
                 }`}
               >
                 <div>
                   {/* Card Header */}
                   <div className="flex items-start justify-between gap-2 mb-3">
-                    <div className="p-2 rounded-xl bg-[#163832] text-[#DAF1DE] border border-[#235347]">
+                    <div className="p-2 rounded-xl bg-[#163832] text-[#DAF1DE] border border-[#235347] group-hover:border-[#8EB69B] group-hover:text-white transition-colors">
                       <Icon className="w-4 h-4" />
                     </div>
                     <div className="text-right">
@@ -230,7 +219,7 @@ export const SkillsSection: React.FC = () => {
                   </p>
 
                   {/* Highlight Project Badge */}
-                  <div className="mb-3 p-2 rounded-lg bg-[#051F20]/70 border border-[#163832] flex items-center gap-1.5 text-[11px]">
+                  <div className="mb-3 p-2 rounded-lg bg-[#051F20]/70 border border-[#163832] flex items-center gap-1.5 text-[11px] group-hover:border-[#235347] transition-colors">
                     <Sparkles className="w-3 h-3 text-[#DAF1DE] shrink-0" />
                     <div className="truncate">
                       <span className="text-[#8EB69B]/70 mr-1 font-mono uppercase text-[9px]">
@@ -242,84 +231,28 @@ export const SkillsSection: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Compact Preview Tags when collapsed */}
-                  {!isExpanded && (
-                    <div className="flex flex-wrap gap-1 mb-2">
-                      {category.skills.map((skill) => (
-                        <span
-                          key={skill.name}
-                          className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#163832] text-[#DAF1DE] border border-[#235347]"
-                        >
-                          {skill.name}
-                        </span>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* Animated Expanded Full Details */}
-                  <AnimatePresence>
-                    {isExpanded && (
-                      <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        transition={{ duration: 0.3, ease: 'easeInOut' }}
-                        className="space-y-2 pt-1 overflow-hidden"
+                  {/* Preview Skill Tags */}
+                  <div className="flex flex-wrap gap-1 mb-2">
+                    {category.skills.map((skill) => (
+                      <span
+                        key={skill.name}
+                        className="text-[10px] font-mono px-1.5 py-0.5 rounded bg-[#163832] text-[#DAF1DE] border border-[#235347]"
                       >
-                        <span className="text-[10px] font-mono uppercase tracking-widest text-[#8EB69B]/70 block">
-                          Proficiency Breakdown:
-                        </span>
-                        {category.skills.map((skill) => (
-                          <div
-                            key={skill.name}
-                            className="p-2 rounded-lg bg-[#051F20]/60 border border-[#163832] space-y-1 text-xs"
-                          >
-                            <div className="flex items-center justify-between gap-1">
-                              <span className="font-medium text-[#DAF1DE] text-xs">
-                                {skill.name}
-                              </span>
-                              <span className="text-[10px] font-mono text-[#8EB69B]">
-                                {skill.level}
-                              </span>
-                            </div>
-
-                            {/* Proficiency meter bar */}
-                            <div className="w-full h-1 bg-[#163832] rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-gradient-to-r from-[#235347] to-[#DAF1DE] rounded-full"
-                                style={{ width: `${skill.proficiency}%` }}
-                              />
-                            </div>
-
-                            {skill.note && (
-                              <p className="text-[10px] text-[#8EB69B] leading-tight">
-                                {skill.note}
-                              </p>
-                            )}
-                          </div>
-                        ))}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
+                        {skill.name}
+                      </span>
+                    ))}
+                  </div>
                 </div>
 
-                {/* Card Expansion Hover Indicator */}
+                {/* Card Click-to-Open Callout */}
                 <div className="pt-3 mt-3 border-t border-[#163832] flex items-center justify-between text-[11px] font-mono text-[#8EB69B]">
-                  <span className="text-[#DAF1DE] flex items-center gap-1">
-                    {isExpanded ? (
-                      <>
-                        <Sparkles className="w-3.5 h-3.5 text-[#DAF1DE] animate-pulse" />
-                        <span className="text-[#DAF1DE] font-medium">Expanded view</span>
-                      </>
-                    ) : (
-                      <>
-                        <span className="text-[#8EB69B]/70">Hover over to expand</span>
-                      </>
-                    )}
+                  <span className="text-[#DAF1DE] group-hover:text-white flex items-center gap-1 transition-colors">
+                    <span>Click to open page</span>
+                    <span className="text-[#8EB69B] group-hover:translate-x-0.5 transition-transform">↗</span>
                   </span>
                   <span>Domain 0{idx + 1}</span>
                 </div>
-              </motion.div>
+              </div>
             );
           })}
         </div>
@@ -341,6 +274,16 @@ export const SkillsSection: React.FC = () => {
           ))}
         </div>
       </div>
+
+      {/* Dedicated Domain Detail Page / Modal with Magical Appearing Animation */}
+      <SkillDetailModal
+        category={selectedCategory}
+        onClose={() => setSelectedCategory(null)}
+        onNavigateToProjects={() => {
+          const el = document.getElementById('projects');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }}
+      />
     </section>
   );
 };

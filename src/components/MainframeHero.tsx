@@ -34,7 +34,7 @@ export const MainframeHero: React.FC<MainframeHeroProps> = ({ onNavigate }) => {
     const handleGlobalMouseMove = (e: MouseEvent) => {
       const canvas = splineContainerRef.current?.querySelector('canvas');
       if (!canvas) return;
-      const event = new PointerEvent('pointermove', {
+      const pointerEvt = new PointerEvent('pointermove', {
         clientX: e.clientX,
         clientY: e.clientY,
         screenX: e.screenX,
@@ -42,7 +42,16 @@ export const MainframeHero: React.FC<MainframeHeroProps> = ({ onNavigate }) => {
         bubbles: true,
         cancelable: true,
       });
-      canvas.dispatchEvent(event);
+      const mouseEvt = new MouseEvent('mousemove', {
+        clientX: e.clientX,
+        clientY: e.clientY,
+        screenX: e.screenX,
+        screenY: e.screenY,
+        bubbles: true,
+        cancelable: true,
+      });
+      canvas.dispatchEvent(pointerEvt);
+      canvas.dispatchEvent(mouseEvt);
     };
 
     window.addEventListener('mousemove', handleGlobalMouseMove, { passive: true });
@@ -305,15 +314,11 @@ export const MainframeHero: React.FC<MainframeHeroProps> = ({ onNavigate }) => {
         {/* Right Column: Free-Floating Interactive 3D Spline Scene (Zero box / no cutting out) */}
         <div
           ref={splineContainerRef}
-          className="lg:col-span-5 relative w-full lg:w-[620px] xl:w-[720px] h-[500px] sm:h-[600px] lg:h-[700px] xl:h-[760px] flex items-center justify-center pointer-events-auto overflow-visible select-none"
-          style={{
-            maskImage: 'linear-gradient(to bottom, black 84%, transparent 100%)',
-            WebkitMaskImage: 'linear-gradient(to bottom, black 84%, transparent 100%)',
-          }}
+          className="lg:col-span-5 relative w-full lg:w-[650px] xl:w-[750px] h-[520px] sm:h-[620px] lg:h-[720px] xl:h-[780px] flex items-center justify-center pointer-events-auto overflow-visible select-none"
         >
           {/* Subtle palette mint/teal floor reflection glow */}
           <div
-            className="absolute bottom-6 w-[400px] h-[180px] rounded-full blur-[90px] opacity-25 pointer-events-none"
+            className="absolute bottom-2 w-[420px] h-[190px] rounded-full blur-[90px] opacity-25 pointer-events-none"
             style={{
               background: 'radial-gradient(circle, #8EB69B 0%, #163832 50%, transparent 75%)',
             }}
@@ -321,7 +326,7 @@ export const MainframeHero: React.FC<MainframeHeroProps> = ({ onNavigate }) => {
           />
 
           {/* Spline 3D Scene Component - Sized up slightly and unclipped */}
-          <div className="w-full h-full transform scale-[1.08] sm:scale-[1.12] lg:scale-[1.15] transition-transform duration-500 flex items-center justify-center">
+          <div className="w-full h-full transform scale-[1.08] sm:scale-[1.12] lg:scale-[1.15] transition-transform duration-500 flex items-center justify-center overflow-visible">
             <SplineScene
               scene="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
               className="w-full h-full"
