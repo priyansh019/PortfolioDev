@@ -71,7 +71,7 @@ export const MainframeNavbar: React.FC<MainframeNavbarProps> = ({
             className="text-[20px] sm:text-[24px] tracking-tight leading-none text-[#DAF1DE] font-medium transition-colors group-hover:text-white"
             style={{ fontFamily: 'var(--font-heading)' }}
           >
-            Priyansh Singh®
+            Priyansh Singh
           </span>
           <span
             className="text-[22px] sm:text-[26px] leading-none text-[#8EB69B] select-none transition-transform duration-500 group-hover:rotate-90 group-hover:scale-125 inline-block"
