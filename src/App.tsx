@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { BackgroundVideo } from './components/BackgroundVideo.tsx';
 import { MainframeNavbar } from './components/MainframeNavbar.tsx';
@@ -14,6 +14,9 @@ import { ScrollReveal } from './components/ui/ScrollReveal.tsx';
 
 export default function App() {
   const [activeSection, setActiveSection] = useState<string>('hero');
+  const isNavigatingRef = useRef(false);
+  const navLockTimerRef = useRef<number | null>(null);
+
   const [modalState, setModalState] = useState<{
     isOpen: boolean;
     tab: string;
@@ -26,22 +29,37 @@ export default function App() {
     subtitle: '',
   });
 
-  // Track active section reliably using getBoundingClientRect across all sections
+  // Track active section reliably during scrolling
   useEffect(() => {
-    const sectionIds = ['hero', 'about', 'projects', 'skills', 'timeline', 'credentials', 'contact'];
+    const navSectionIds = ['credentials', 'timeline', 'skills', 'projects', 'about'];
+
     const handleScroll = () => {
+      // Don't override activeSection while smooth-scrolling from a direct navigation click
+      if (isNavigatingRef.current) return;
+
       if (window.scrollY < 180) {
         setActiveSection('hero');
         return;
       }
 
-      for (let i = sectionIds.length - 1; i >= 0; i--) {
-        const el = document.getElementById(sectionIds[i]);
+      // Check if user is scrolled to the absolute bottom of page
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 60
+      ) {
+        setActiveSection('credentials');
+        return;
+      }
+
+      // Check each section: active when its top is within upper half of viewport and bottom is visible
+      const viewportTarget = window.innerHeight * 0.48;
+      for (const id of navSectionIds) {
+        const el = document.getElementById(id);
         if (el) {
           const rect = el.getBoundingClientRect();
-          if (rect.top <= window.innerHeight * 0.38) {
-            setActiveSection(sectionIds[i]);
-            break;
+          if (rect.top <= viewportTarget && rect.bottom >= 110) {
+            setActiveSection(id);
+            return;
           }
         }
       }
@@ -49,15 +67,29 @@ export default function App() {
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      if (navLockTimerRef.current) clearTimeout(navLockTimerRef.current);
+    };
   }, []);
 
   const handleNavigate = (sectionId: string) => {
+    // 1. Immediately toggle the active section so the top bar pill slides instantly!
+    setActiveSection(sectionId);
+
+    // 2. Temporarily lock scroll listener so the animation completes without intermediate section flickering
+    isNavigatingRef.current = true;
+    if (navLockTimerRef.current) clearTimeout(navLockTimerRef.current);
+    navLockTimerRef.current = window.setTimeout(() => {
+      isNavigatingRef.current = false;
+    }, 900);
+
+    // 3. Smooth scroll to the target section
     const el = document.getElementById(sectionId);
     if (el) {
-      const yOffset = -75; // Account for fixed navbar height
+      const yOffset = -72; // Account for fixed navbar height
       const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: 'smooth' });
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
     }
   };
 

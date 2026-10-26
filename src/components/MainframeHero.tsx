@@ -29,33 +29,56 @@ export const MainframeHero: React.FC<MainframeHeroProps> = ({ onNavigate }) => {
     return () => clearTimeout(timer);
   }, []);
 
-  // Forward whole-page mouse movement directly to Spline canvas so robot tracks cursor everywhere
+  // Forward smoothly lerped mouse movement directly to Spline canvas for silky-smooth robot tracking
   useEffect(() => {
+    let animId: number;
+    let targetX = window.innerWidth * 0.5;
+    let targetY = window.innerHeight * 0.4;
+    let currentX = targetX;
+    let currentY = targetY;
+
     const handleGlobalMouseMove = (e: MouseEvent) => {
+      targetX = e.clientX;
+      targetY = e.clientY;
+    };
+
+    const updateSplineCursor = () => {
+      // Gentle exponential lerp damping for silky-smooth head and body motion
+      currentX += (targetX - currentX) * 0.11;
+      currentY += (targetY - currentY) * 0.11;
+
       const canvas = splineContainerRef.current?.querySelector('canvas');
-      if (!canvas) return;
-      const pointerEvt = new PointerEvent('pointermove', {
-        clientX: e.clientX,
-        clientY: e.clientY,
-        screenX: e.screenX,
-        screenY: e.screenY,
-        bubbles: true,
-        cancelable: true,
-      });
-      const mouseEvt = new MouseEvent('mousemove', {
-        clientX: e.clientX,
-        clientY: e.clientY,
-        screenX: e.screenX,
-        screenY: e.screenY,
-        bubbles: true,
-        cancelable: true,
-      });
-      canvas.dispatchEvent(pointerEvt);
-      canvas.dispatchEvent(mouseEvt);
+      if (canvas) {
+        const pointerEvt = new PointerEvent('pointermove', {
+          clientX: currentX,
+          clientY: currentY,
+          screenX: currentX,
+          screenY: currentY,
+          bubbles: true,
+          cancelable: true,
+        });
+        const mouseEvt = new MouseEvent('mousemove', {
+          clientX: currentX,
+          clientY: currentY,
+          screenX: currentX,
+          screenY: currentY,
+          bubbles: true,
+          cancelable: true,
+        });
+        canvas.dispatchEvent(pointerEvt);
+        canvas.dispatchEvent(mouseEvt);
+      }
+
+      animId = requestAnimationFrame(updateSplineCursor);
     };
 
     window.addEventListener('mousemove', handleGlobalMouseMove, { passive: true });
-    return () => window.removeEventListener('mousemove', handleGlobalMouseMove);
+    animId = requestAnimationFrame(updateSplineCursor);
+
+    return () => {
+      window.removeEventListener('mousemove', handleGlobalMouseMove);
+      cancelAnimationFrame(animId);
+    };
   }, []);
 
   const handleCopy = (e: React.MouseEvent) => {

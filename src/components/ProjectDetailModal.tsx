@@ -42,12 +42,12 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
         {/* Magical Ambient Bloom Aura */}
         <motion.div
           initial={{ opacity: 0, scale: 0.6 }}
-          animate={{ opacity: 0.4, scale: 1 }}
+          animate={{ opacity: 0.24, scale: 1 }}
           exit={{ opacity: 0, scale: 0.6 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="absolute w-[520px] h-[520px] rounded-full blur-[140px] pointer-events-none"
+          className="absolute w-[520px] h-[520px] rounded-full blur-[160px] pointer-events-none"
           style={{
-            background: `radial-gradient(circle, ${project.coverAccent} 0%, rgba(35,83,71,0.4) 50%, transparent 75%)`,
+            background: `radial-gradient(circle, ${project.coverAccent} 0%, rgba(35,83,71,0.3) 50%, transparent 75%)`,
           }}
           aria-hidden="true"
         />
@@ -64,7 +64,7 @@ export const ProjectDetailModal: React.FC<ProjectDetailModalProps> = ({ project,
         >
           {/* Subtle Magical Shimmering Border Highlight */}
           <div
-            className="absolute -inset-[1px] rounded-2xl sm:rounded-3xl pointer-events-none opacity-25 bg-gradient-to-r from-transparent via-[#8EB69B] to-transparent animate-pulse"
+            className="absolute -inset-[1px] rounded-2xl sm:rounded-3xl pointer-events-none opacity-18 bg-gradient-to-r from-transparent via-[#8EB69B] to-transparent animate-pulse"
             aria-hidden="true"
           />
 

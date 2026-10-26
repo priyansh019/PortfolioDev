@@ -57,10 +57,10 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({
         {/* Magical Ambient Bloom Aura */}
         <motion.div
           initial={{ opacity: 0, scale: 0.6 }}
-          animate={{ opacity: 0.35, scale: 1 }}
+          animate={{ opacity: 0.22, scale: 1 }}
           exit={{ opacity: 0, scale: 0.6 }}
           transition={{ duration: 0.5, ease: 'easeOut' }}
-          className="absolute w-[500px] h-[500px] rounded-full blur-[140px] pointer-events-none"
+          className="absolute w-[500px] h-[500px] rounded-full blur-[160px] pointer-events-none"
           style={{
             background: 'radial-gradient(circle, #8EB69B 0%, #235347 50%, transparent 75%)',
           }}
@@ -79,7 +79,7 @@ export const SkillDetailModal: React.FC<SkillDetailModalProps> = ({
         >
           {/* Subtle Magical Shimmering Border Highlight */}
           <div
-            className="absolute -inset-[1px] rounded-2xl sm:rounded-3xl pointer-events-none opacity-30 bg-gradient-to-r from-transparent via-[#8EB69B] to-transparent animate-pulse"
+            className="absolute -inset-[1px] rounded-2xl sm:rounded-3xl pointer-events-none opacity-18 bg-gradient-to-r from-transparent via-[#8EB69B] to-transparent animate-pulse"
             aria-hidden="true"
           />
 

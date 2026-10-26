@@ -94,8 +94,8 @@ export function MouseSpotlight({
   return (
     <div
       className={cn(
-        'pointer-events-none absolute rounded-full blur-[80px] transition-opacity duration-150 z-[2]',
-        isVisible ? 'opacity-75' : 'opacity-0',
+        'pointer-events-none absolute rounded-full blur-[90px] transition-opacity duration-200 z-[2]',
+        isVisible ? 'opacity-65' : 'opacity-0',
         className
       )}
       style={{
@@ -104,7 +104,7 @@ export function MouseSpotlight({
         left: `${mousePosition.x - size / 2}px`,
         top: `${mousePosition.y - size / 2}px`,
         background:
-          'radial-gradient(circle, rgba(218, 241, 222, 0.72) 0%, rgba(142, 182, 155, 0.42) 45%, rgba(35, 83, 71, 0.20) 65%, transparent 80%)',
+          'radial-gradient(circle, rgba(218, 241, 222, 0.58) 0%, rgba(142, 182, 155, 0.32) 45%, rgba(35, 83, 71, 0.14) 65%, transparent 80%)',
       }}
       aria-hidden="true"
     />
