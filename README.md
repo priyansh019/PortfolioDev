@@ -1,40 +1,49 @@
-# Priyansh Singh | Portfolio
+# Priyansh Singh — Portfolio
 
-A modern, responsive developer portfolio built with React, TypeScript, and Vite.
+My personal developer portfolio, built with React, TypeScript, and Vite.
 
-**Live:** [priyxnsh19.vercel.app](https://priyxnsh19.vercel.app/)
+**Live site:** [priyxnsh19.vercel.app](https://priyxnsh19.vercel.app/)
 
-## Features
+## About
 
-- Animated portfolio sections
-- Projects, skills, experience, and credentials
-- Responsive desktop and mobile design
-- Interactive project modals
+The website presents my profile, projects, technical skills, experience, achievements, and contact information. It also includes responsive layouts, animations, project details, and interactive navigation.
 
-## Tech Stack
+## Built With
 
 - React
 - TypeScript
 - Vite
 - Tailwind CSS
 - Framer Motion
+- Spline
 
 ## Run Locally
 
+### Prerequisites
+
+- Node.js
+- npm
+
+### Steps
+
 ```bash
+git clone https://github.com/priyansh019/PortfolioDev.git
+cd PortfolioDev
 npm install
 npm run dev
 ```
 
-Open `http://localhost:3000`.
+Open [http://localhost:3000](http://localhost:3000).
 
-## Build
+## Available Commands
 
 ```bash
-npm run build
-npm run preview
+npm run dev    # Start the development server
+npm run build  # Create a production build
+npm run preview # Preview the production build
+npm run lint   # Check TypeScript
 ```
 
-## Author
+## Deployment
 
-**Priyansh Singh**
+Build the project with `npm run build`. The generated `dist` folder can be deployed on Vercel or another static hosting provider.
